@@ -13,6 +13,7 @@
     "apollo-server-lambda": "^2.11.0",
     "bootstrap": "^4.4.1",
     "dotenv": "^8.2.0",
+    "encoding": "^0.1.12",
     "formik": "^2.1.4",
     "graphql": "^14.6.0",
     "mongoose": "^5.9.4",
@@ -30,14 +31,15 @@
     "react-svg-spinner": "^1.0.4",
     "run-all": "^1.0.1",
     "use-places-autocomplete": "^1.0.2",
+    "webpack-node-externals": "^1.7.2",
     "yup": "^0.28.3"
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:lambda": "netlify-lambda serve graphql-server/src/lambda",
+    "start:lambda": "netlify-lambda serve graphql-server/src/lambda --config webpack.functions.js",
     "build": "run-p build:**",
     "build:app": "react-scripts build",
-    "build:lambda": "netlify-lambda build graphql-server/src/lambda",
+    "build:lambda": "netlify-lambda build graphql-server/src/lambda --config webpack.functions.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

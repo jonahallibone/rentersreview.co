@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { resolvers } from "./resolvers";
 import { typeDefs } from "./typeDefs";
 import { config } from "dotenv";
+import encoding from "encoding";
 
 config();
 
