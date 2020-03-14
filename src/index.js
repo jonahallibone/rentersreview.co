@@ -21,7 +21,7 @@ import * as serviceWorker from "./serviceWorker";
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
-    uri: "/.netlify/functions/graphql"
+    uri: process.env.REACT_APP_GRAPH_QL_URI
   })
 });
 
