@@ -28,6 +28,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "react-svg-spinner": "^1.0.4",
+    "run-all": "^1.0.1",
     "use-places-autocomplete": "^1.0.2",
     "yup": "^0.28.3"
   },
@@ -54,5 +55,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
   }
 }
