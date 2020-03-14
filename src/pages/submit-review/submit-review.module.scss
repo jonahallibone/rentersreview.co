@@ -1,0 +1,53 @@
+.input,
+.input_textarea {
+  padding: 0.5rem 0.25rem;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  transition: 0.15s ease box-shadow;
+  width: 100%;
+
+  &:focus {
+    box-shadow: 0 0 0 1px #0984e3;
+    border: 1px solid #0984e3;
+    outline: none;
+  }
+}
+
+.input_textarea {
+  height: 300px;
+}
+
+.dropdown_container {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  z-index: 999;
+  background: #fff;
+  border-radius: 5px;
+  top: 100%;
+  left: 0;
+  border: 1px solid #ddd;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown_item {
+  padding: 0.5rem;
+
+  &:hover {
+    background: #ddd;
+    cursor: pointer;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.error {
+  color: #ff6b81;
+}
