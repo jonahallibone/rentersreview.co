@@ -213,7 +213,7 @@ const SubmitReview = () => {
           </Col>
         </Row>
         <Row className="justify-content-center mt-5">
-          <Col xs={8}>
+          <Col xs={12} md={8}>
             {}
             <Formik
               initialValues={{
