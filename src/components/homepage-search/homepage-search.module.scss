@@ -3,7 +3,7 @@
   background: #FFF;
   border-radius: 5px;
   border: 1px solid #DDD;
-  padding: .5rem 1rem;
+  padding: .5rem .5rem;
   margin-top: 5rem;
 }
 
@@ -11,7 +11,9 @@
   border: none;
   font-size: 1.25rem;
   outline: none;
-  flex: 1;
+  flex: 1 1 100%;
+  padding-right: .5rem;
+  width: 100%;
 }
 
 .homepage_input__button {
