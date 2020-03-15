@@ -104,8 +104,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _typeDefs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./typeDefs */ "./typeDefs.js");
 /* harmony import */ var dotenv__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dotenv */ "dotenv");
 /* harmony import */ var dotenv__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(dotenv__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var encoding__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! encoding */ "encoding");
-/* harmony import */ var encoding__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(encoding__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _sentry_node__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @sentry/node */ "@sentry/node");
+/* harmony import */ var _sentry_node__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_sentry_node__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var encoding__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! encoding */ "encoding");
+/* harmony import */ var encoding__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(encoding__WEBPACK_IMPORTED_MODULE_6__);
+
 
 
 
@@ -113,12 +116,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 Object(dotenv__WEBPACK_IMPORTED_MODULE_4__["config"])();
+_sentry_node__WEBPACK_IMPORTED_MODULE_5__["init"]({
+  dsn: 'https://4de26209a3c44912b676ef8013081e8b@sentry.io/4754945'
+});
 
 const startServer = async () => {
   await mongoose__WEBPACK_IMPORTED_MODULE_1___default.a.connect(process.env.DB_HOST, {
     useNewUrlParser: true
   });
-  return server;
 };
 
 startServer();
@@ -169,6 +174,7 @@ const Apartment = mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.model("Apartme
   transportRating: Number,
   review: String
 });
+
 
 /***/ }),
 
@@ -302,6 +308,17 @@ const typeDefs = apollo_server__WEBPACK_IMPORTED_MODULE_0__["gql"]`
     ): Apartment!
   }
 `;
+
+/***/ }),
+
+/***/ "@sentry/node":
+/*!*******************************!*\
+  !*** external "@sentry/node" ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@sentry/node");
 
 /***/ }),
 

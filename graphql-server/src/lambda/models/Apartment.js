@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export const Apartment = mongoose.model("Apartment", {
+const Apartment = mongoose.model("Apartment", {
   address: {
     street: String,
     city: String,
@@ -21,3 +21,7 @@ export const Apartment = mongoose.model("Apartment", {
   transportRating: Number,
   review: String
 });
+
+export {
+  Apartment
+}

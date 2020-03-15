@@ -121,6 +121,7 @@ const Apartment = mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.model("Apartme
   review: String
 });
 
+
 /***/ }),
 
 /***/ "./resolvers.js":
