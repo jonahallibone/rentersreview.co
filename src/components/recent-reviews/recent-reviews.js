@@ -60,7 +60,7 @@ const RecentReviews = () => {
           </ApartmentCardContent>
           <ApartmentCardFooter>
             <div>
-              <small>Overall</small>
+              <small>Overall — {overall.toFixed(1)}</small>
             </div>
             <div>
               <RatingReadonly value={overall} />
