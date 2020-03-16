@@ -5,8 +5,18 @@ const Apartment = mongoose.model("Apartment", {
     street: String,
     city: String,
     state: String,
-    zipcode: String,
-    coordinates: [Number]
+    zipcode: String
+  },
+  location: {
+    type: {
+      type: String, 
+      enum: ["Point"],
+      required: true
+    },
+    coordinates: {
+      type: [Number],
+      required: true
+    }
   },
   apartment: String,
   rent: Number,
@@ -22,6 +32,4 @@ const Apartment = mongoose.model("Apartment", {
   review: String
 });
 
-export {
-  Apartment
-}
+export { Apartment };

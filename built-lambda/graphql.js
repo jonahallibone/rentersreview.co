@@ -108,6 +108,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _sentry_node__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_sentry_node__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var encoding__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! encoding */ "encoding");
 /* harmony import */ var encoding__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(encoding__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var graphql_tools__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! graphql-tools */ "graphql-tools");
+/* harmony import */ var graphql_tools__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(graphql_tools__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _scalars_Geopoint__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./scalars/Geopoint */ "./scalars/Geopoint.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
 
 
 
@@ -117,7 +128,7 @@ __webpack_require__.r(__webpack_exports__);
 
 Object(dotenv__WEBPACK_IMPORTED_MODULE_4__["config"])();
 _sentry_node__WEBPACK_IMPORTED_MODULE_5__["init"]({
-  dsn: 'https://4de26209a3c44912b676ef8013081e8b@sentry.io/4754945'
+  dsn: "https://4de26209a3c44912b676ef8013081e8b@sentry.io/4754945"
 });
 
 const startServer = async () => {
@@ -128,8 +139,12 @@ const startServer = async () => {
 
 startServer();
 const server = new apollo_server_lambda__WEBPACK_IMPORTED_MODULE_0__["ApolloServer"]({
-  typeDefs: _typeDefs__WEBPACK_IMPORTED_MODULE_3__["typeDefs"],
-  resolvers: _resolvers__WEBPACK_IMPORTED_MODULE_2__["resolvers"]
+  schema: Object(graphql_tools__WEBPACK_IMPORTED_MODULE_7__["makeExecutableSchema"])({
+    typeDefs: _objectSpread({}, _typeDefs__WEBPACK_IMPORTED_MODULE_3__["typeDefs"], {
+      geoPointScalar: _scalars_Geopoint__WEBPACK_IMPORTED_MODULE_8__["geoPointScalar"]
+    }),
+    resolvers: _resolvers__WEBPACK_IMPORTED_MODULE_2__["resolvers"]
+  })
 });
 const handler = server.createHandler({
   cors: {
@@ -158,8 +173,18 @@ const Apartment = mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.model("Apartme
     street: String,
     city: String,
     state: String,
-    zipcode: String,
-    coordinates: [Number]
+    zipcode: String
+  },
+  location: {
+    type: {
+      type: String,
+      enum: ["Point"],
+      required: true
+    },
+    coordinates: {
+      type: [Number],
+      required: true
+    }
   },
   apartment: String,
   rent: Number,
@@ -198,11 +223,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 const resolvers = {
   Query: {
-    apartments: () => _models_Apartment__WEBPACK_IMPORTED_MODULE_0__["Apartment"].find()
+    apartments: () => _models_Apartment__WEBPACK_IMPORTED_MODULE_0__["Apartment"].find(),
+    getApartment: id => _models_Apartment__WEBPACK_IMPORTED_MODULE_0__["Apartment"].findOne(id)
   },
   Mutation: {
     createApartment: async (_, {
       address,
+      location,
       apartment,
       rent,
       bedrooms,
@@ -218,6 +245,10 @@ const resolvers = {
     }) => {
       const newApartment = new _models_Apartment__WEBPACK_IMPORTED_MODULE_0__["Apartment"]({
         address: _objectSpread({}, address),
+        location: {
+          type: "Point",
+          coordinates: location
+        },
         apartment,
         rent,
         bedrooms,
@@ -239,6 +270,39 @@ const resolvers = {
 
 /***/ }),
 
+/***/ "./scalars/Geopoint.js":
+/*!*****************************!*\
+  !*** ./scalars/Geopoint.js ***!
+  \*****************************/
+/*! exports provided: geoPointScalar */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "geoPointScalar", function() { return geoPointScalar; });
+/* harmony import */ var graphql__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! graphql */ "graphql");
+/* harmony import */ var graphql__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(graphql__WEBPACK_IMPORTED_MODULE_0__);
+
+const geoPointScalar = new graphql__WEBPACK_IMPORTED_MODULE_0__["GraphQLScalarType"]({
+  name: 'Coordinates',
+  description: 'A set of coordinates. x, y',
+
+  parseValue(value) {
+    return value;
+  },
+
+  serialize(value) {
+    return value;
+  },
+
+  parseLiteral(ast) {
+    return ast.value;
+  }
+
+});
+
+/***/ }),
+
 /***/ "./typeDefs.js":
 /*!*********************!*\
   !*** ./typeDefs.js ***!
@@ -253,8 +317,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var apollo_server__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(apollo_server__WEBPACK_IMPORTED_MODULE_0__);
 
 const typeDefs = apollo_server__WEBPACK_IMPORTED_MODULE_0__["gql"]`
+
+  scalar Coordinates
+
   type Query {
     apartments: [Apartment!]!
+    getApartment(id: ID!): Apartment!
   }
 
   type Address {
@@ -262,7 +330,6 @@ const typeDefs = apollo_server__WEBPACK_IMPORTED_MODULE_0__["gql"]`
     city: String!
     state: String!
     zipcode: String!
-    coordindates: [Float]
   }
 
   input AddressInput {
@@ -270,12 +337,12 @@ const typeDefs = apollo_server__WEBPACK_IMPORTED_MODULE_0__["gql"]`
     city: String!
     state: String!
     zipcode: String!
-    coordindates: [Float]
   }
 
   type Apartment {
     id: ID!
     address: Address!
+    location: Coordinates!
     apartment: String
     rent: String!
     bedrooms: Int!
@@ -293,6 +360,7 @@ const typeDefs = apollo_server__WEBPACK_IMPORTED_MODULE_0__["gql"]`
   type Mutation {
     createApartment(
       address: AddressInput!
+      location: Coordinates!
       apartment: String
       rent: Int!
       bedrooms: Int!
@@ -363,6 +431,28 @@ module.exports = require("dotenv");
 /***/ (function(module, exports) {
 
 module.exports = require("encoding");
+
+/***/ }),
+
+/***/ "graphql":
+/*!**************************!*\
+  !*** external "graphql" ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("graphql");
+
+/***/ }),
+
+/***/ "graphql-tools":
+/*!********************************!*\
+  !*** external "graphql-tools" ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("graphql-tools");
 
 /***/ }),
 

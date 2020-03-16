@@ -11,7 +11,9 @@ import ApartmentCard, {
   ApartmentCardContent
 } from "../apartment-card/apartment-card";
 import RatingReadonly from "../rating-readonly/RatingReadonly";
-const GET_RECENT_APARTMENTS = gql`
+
+const RecentReviews = () => {
+  const GET_RECENT_APARTMENTS = gql`
   {
     apartments {
       id
@@ -25,7 +27,6 @@ const GET_RECENT_APARTMENTS = gql`
   }
 `;
 
-const RecentReviews = () => {
   const { loading, error, data } = useQuery(GET_RECENT_APARTMENTS);
 
   const showRecent = data => {
@@ -35,7 +36,7 @@ const RecentReviews = () => {
       const { landlordRating, neighborhoodRating, transportRating } = apartment;
       const overall = (landlordRating + neighborhoodRating + transportRating) / 3;
       return (
-        <ApartmentCard key={apartment.id}>
+        <ApartmentCard id={apartment.id} key={apartment.id}>
           <ApartmentCardHeader></ApartmentCardHeader>
           <ApartmentCardContent>
             <h6 className="mb-2">{apartment.address.street}</h6>

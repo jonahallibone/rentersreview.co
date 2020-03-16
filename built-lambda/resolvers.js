@@ -104,8 +104,18 @@ const Apartment = mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.model("Apartme
     street: String,
     city: String,
     state: String,
-    zipcode: String,
-    coordinates: [Number]
+    zipcode: String
+  },
+  location: {
+    type: {
+      type: String,
+      enum: ["Point"],
+      required: true
+    },
+    coordinates: {
+      type: [Number],
+      required: true
+    }
   },
   apartment: String,
   rent: Number,
@@ -144,11 +154,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 const resolvers = {
   Query: {
-    apartments: () => _models_Apartment__WEBPACK_IMPORTED_MODULE_0__["Apartment"].find()
+    apartments: () => _models_Apartment__WEBPACK_IMPORTED_MODULE_0__["Apartment"].find(),
+    getApartment: id => _models_Apartment__WEBPACK_IMPORTED_MODULE_0__["Apartment"].findOne(id)
   },
   Mutation: {
     createApartment: async (_, {
       address,
+      location,
       apartment,
       rent,
       bedrooms,
@@ -164,6 +176,10 @@ const resolvers = {
     }) => {
       const newApartment = new _models_Apartment__WEBPACK_IMPORTED_MODULE_0__["Apartment"]({
         address: _objectSpread({}, address),
+        location: {
+          type: "Point",
+          coordinates: location
+        },
         apartment,
         rent,
         bedrooms,

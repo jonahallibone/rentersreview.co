@@ -20,6 +20,7 @@ const ADD_REVIEW = gql`
   mutation CreateApartment(
     $address: AddressInput!
     $apartment: String
+    $location: Coordinates!
     $rent: Int!
     $bedrooms: Int!
     $bathrooms: Int!
@@ -35,6 +36,7 @@ const ADD_REVIEW = gql`
     createApartment(
       address: $address
       apartment: $apartment
+      location: $location
       rent: $rent
       bedrooms: $bedrooms
       bathrooms: $bathrooms
@@ -147,7 +149,7 @@ const SubmitReview = () => {
   };
 
   const verifyAddress = () => {
-    if (!address.current?.coordindates) {
+    if (!address.current?.coordinates) {
       setHasSelectedAddress("ACTION_TAKEN");
     }
   }
@@ -160,7 +162,7 @@ const SubmitReview = () => {
 
     const results = await getGeocode({ address: description });
     const { lat, lng } = await getLatLng(results[0]);
-    address.current.coordindates = { lat, lng };
+    address.current.coordinates = { lat, lng };
     address.current.street = description;
     address.current = {
       ...address.current,
@@ -233,17 +235,21 @@ const SubmitReview = () => {
               }}
               validationSchema={ReviewSchema}
               onSubmit={async values => {
-                if (address.current?.coordindates) {
+                if (address.current?.coordinates) {
                   addReview({
                     variables: {
                       address: {
-                        ...address.current,
-                        coordindates: [
-                          address.current.coordindates.lat,
-                          address.current.coordindates.lng
-                        ]
+                        street: address.current.street,
+                        city: address.current.city,
+                        state: address.current.state,
+                        zipcode: address.current.zipcode,
                       },
                       ...values,
+                      location: [
+                        //GeoJSON requires order to be lng,lat
+                        address.current.coordinates.lng,
+                        address.current.coordinates.lat
+                      ],
                       leaseYearStart: parseInt(values.leaseYearStart),
                       leaseYearEnd: parseInt(values.leaseYearEnd),
                       bedrooms: parseInt(values.bedrooms),
@@ -273,7 +279,7 @@ const SubmitReview = () => {
                           )}
                         </div>
                         {hasSelectedAddress === "ACTION_TAKEN" &&
-                          !address?.current?.coordindates && (
+                          !address?.current?.coordinates && (
                             <small className={styles.error}>
                               Please choose an address from the dropdown
                             </small>

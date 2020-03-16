@@ -3,7 +3,6 @@
   align-items: center;
   justify-content: flex-start;
   background: #FFF;
-  border-bottom: 1px solid #DDD;
   width: 100%;
   height: 75px;
   position: fixed;
@@ -11,6 +10,7 @@
   left: 0;
   padding: .5rem 0;
   z-index: 1000;
+  box-shadow: 0 0 0 3px rgba($color: #000000, $alpha: 0.1);
 }
 
 .navigation_links {

@@ -1,8 +1,12 @@
 import { gql } from "apollo-server";
 
 export const typeDefs = gql`
+
+  scalar Coordinates
+
   type Query {
     apartments: [Apartment!]!
+    getApartment(id: ID!): Apartment!
   }
 
   type Address {
@@ -10,7 +14,6 @@ export const typeDefs = gql`
     city: String!
     state: String!
     zipcode: String!
-    coordindates: [Float]
   }
 
   input AddressInput {
@@ -18,12 +21,12 @@ export const typeDefs = gql`
     city: String!
     state: String!
     zipcode: String!
-    coordindates: [Float]
   }
 
   type Apartment {
     id: ID!
     address: Address!
+    location: Coordinates!
     apartment: String
     rent: String!
     bedrooms: Int!
@@ -41,6 +44,7 @@ export const typeDefs = gql`
   type Mutation {
     createApartment(
       address: AddressInput!
+      location: Coordinates!
       apartment: String
       rent: Int!
       bedrooms: Int!

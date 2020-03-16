@@ -100,8 +100,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var apollo_server__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(apollo_server__WEBPACK_IMPORTED_MODULE_0__);
 
 const typeDefs = apollo_server__WEBPACK_IMPORTED_MODULE_0__["gql"]`
+
+  scalar Coordinates
+
   type Query {
     apartments: [Apartment!]!
+    getApartment(id: ID!): Apartment!
   }
 
   type Address {
@@ -109,7 +113,6 @@ const typeDefs = apollo_server__WEBPACK_IMPORTED_MODULE_0__["gql"]`
     city: String!
     state: String!
     zipcode: String!
-    coordindates: [Float]
   }
 
   input AddressInput {
@@ -117,12 +120,12 @@ const typeDefs = apollo_server__WEBPACK_IMPORTED_MODULE_0__["gql"]`
     city: String!
     state: String!
     zipcode: String!
-    coordindates: [Float]
   }
 
   type Apartment {
     id: ID!
     address: Address!
+    location: Coordinates!
     apartment: String
     rent: String!
     bedrooms: Int!
@@ -140,6 +143,7 @@ const typeDefs = apollo_server__WEBPACK_IMPORTED_MODULE_0__["gql"]`
   type Mutation {
     createApartment(
       address: AddressInput!
+      location: Coordinates!
       apartment: String
       rent: Int!
       bedrooms: Int!

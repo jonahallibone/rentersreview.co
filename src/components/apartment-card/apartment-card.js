@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./apartment-card.module.scss";
+import { Link } from "react-router-dom";
 
 const ApartmentCardHeader = ({ children }) => (
   <header className={styles.apartment_card__header}>{children}</header>
@@ -13,8 +14,10 @@ const ApartmentCardFooter = ({ children }) => (
   <footer className={styles.apartment_card__footer}>{children}</footer>
 );
 
-const ApartmentCard = ({ children }) => {
-  return <article className={styles.apartment_card}>{children}</article>;
+const ApartmentCard = ({ children, id }) => {
+  return (
+      <Link to={`/apartment/${id}`} className={styles.apartment_card}>{children}</Link>
+  );
 };
 
 export {
