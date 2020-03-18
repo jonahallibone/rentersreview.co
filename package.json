@@ -45,10 +45,9 @@
     "build:app": "react-scripts build",
     "build:lambda": "netlify-lambda build graphql-server/src/lambda --config webpack.functions.js",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "eject": "react-scripts eject",
+    "lint": "eslint src/**/*.{js,jsx}",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,css,less,scss,vue,json,gql,md}\""
   },
   "browserslist": {
     "production": [
@@ -63,7 +62,16 @@
     ]
   },
   "devDependencies": {
-    "npm-run-all": "^4.1.5"
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^2.5.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.19.1"
   },
   "proxy": "http://localhost:9000"
 }

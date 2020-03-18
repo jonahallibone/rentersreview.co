@@ -10,7 +10,7 @@ import ApartmentCard, {
   ApartmentCardFooter,
   ApartmentCardContent
 } from "../apartment-card/apartment-card";
-import RatingReadonly from "../rating-readonly/RatingReadonly";
+import RatingReadonly from "../rating-readonly/rating-readonly";
 
 const RecentReviews = () => {
   const GET_RECENT_APARTMENTS = gql`
