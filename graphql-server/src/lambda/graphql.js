@@ -9,6 +9,7 @@ import { makeExecutableSchema } from "graphql-tools";
 import { geoPointScalar } from "./scalars/Geopoint";
 
 config();
+
 Sentry.init({
   dsn: "https://4de26209a3c44912b676ef8013081e8b@sentry.io/4754945"
 });
@@ -21,7 +22,7 @@ startServer();
 
 const server = new ApolloServer({
   schema: makeExecutableSchema({
-    typeDefs: {...typeDefs, geoPointScalar},
+    typeDefs: { ...typeDefs, geoPointScalar },
     resolvers
   })
 });

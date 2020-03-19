@@ -20,9 +20,11 @@
 
 .apartment_card__content {
   padding: 1rem;
+  flex: 1 1 100%;
 }
 
 .apartment_card__footer {
   border-top: 1px solid #DDD;
   padding: 1rem;
+  flex: 0 0 50px;
 }

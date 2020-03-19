@@ -224,7 +224,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 const resolvers = {
   Query: {
     apartments: () => _models_Apartment__WEBPACK_IMPORTED_MODULE_0__["Apartment"].find(),
-    getApartment: id => _models_Apartment__WEBPACK_IMPORTED_MODULE_0__["Apartment"].findOne(id)
+    getApartment: (parent, args, context, info) => _models_Apartment__WEBPACK_IMPORTED_MODULE_0__["Apartment"].findById(args.id)
   },
   Mutation: {
     createApartment: async (_, {

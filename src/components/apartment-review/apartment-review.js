@@ -16,12 +16,15 @@ import {
   FaTshirt
 } from "react-icons/fa";
 import { MdPets, MdDirectionsBike, MdTrain } from "react-icons/md";
+import ClaimApartment from "../claim-apartment/claim-apartment";
 
 const GET_APARTMENT = gql`
   query GetApartment($id: ID!) {
     getApartment(id: $id) {
       address {
         street
+        city
+        state
         zipcode
       }
       location
@@ -120,9 +123,17 @@ const ApartmentPage = () => {
     }
   };
 
+  const getAddress = (street, apt) => {
+    if (apt) {
+      return `${street}, ${apt}`;
+    }
+
+    return street;
+  };
+
   const getRemaingAmenities = useCallback(() => {
     return aptState.amenities.map(amenity => (
-      <div className="d-flex align-items-center">
+      <div key={amenity} className="d-flex align-items-center">
         <span className={styles.icon}>{getAmenityIcon(amenity)}</span>
         {getAmenityName(amenity)}
       </div>
@@ -134,20 +145,51 @@ const ApartmentPage = () => {
       <div>
         {aptState?.location && <ReviewMap location={aptState.location} />}
         <Container className="mt-5">
-          <Row>
-            <Col xs={12}>
-              <h1 className={styles.display_1}>{aptState.address.street}</h1>
-              <RatingReadonly value={averageRating.current} size="25" />
-            </Col>
-          </Row>
           <Row className="mt-5">
-            <Col xs={12} md={6}>
+            <Col xs={12} md={8}>
               <Row>
                 <Col xs={12}>
+                  <h1 className={styles.display_1}>
+                    {getAddress(aptState.address.street, aptState.apartment)}
+                  </h1>
+                  <h6 className={styles.display_2}>
+                    {aptState.address.city}, {aptState.address.state},{" "}
+                    {aptState.address.zipcode}
+                  </h6>
+                  <div className="d-flex align-items-center">
+                    <RatingReadonly value={averageRating.current} size="25" />
+                    <h6 className="mb-0 ml-2">
+                      {averageRating.current.toFixed(1)}
+                    </h6>
+                  </div>
+                </Col>
+              </Row>
+              <Row className="mt-5">
+                <Col xs={12}>
                   <h6>Review</h6>
-                  <p className={!aptState?.review && styles.no_content}>
+                  <p className={!aptState?.review ? styles.no_content : ""}>
                     {aptState?.review ? aptState?.review : "No review"}
                   </p>
+                </Col>
+              </Row>
+              <Row className="mt-5">
+                <Col xs={12} md={4}>
+                  <div>
+                    <small>Landlord Rating</small>
+                  </div>
+                  <RatingReadonly value={aptState.landlordRating} />
+                </Col>
+                <Col xs={12} md={4}>
+                  <div>
+                    <small>Neighborhood Rating</small>
+                  </div>
+                  <RatingReadonly value={aptState.neighborhoodRating} />
+                </Col>
+                <Col xs={12} md={4}>
+                  <div>
+                    <small>Transport Rating</small>
+                  </div>
+                  <RatingReadonly value={aptState.transportRating} />
                 </Col>
               </Row>
               <Row>
@@ -176,6 +218,32 @@ const ApartmentPage = () => {
                   </div>
                 </Col>
               </Row>
+              <Row className="mt-5">
+                <Col xs={12}>
+                  <h6>Lease Details</h6>
+                </Col>
+              </Row>
+              <Row className="mt-2">
+                <Col xs={12} sm>
+                  <small>Rent</small>
+                  <p>${aptState.rent}/mo</p>
+                </Col>
+                <Col xs={12} sm>
+                  <small>Lease start</small>
+                  <p>{aptState.leaseYearStart ?? "Unknown"}</p>
+                </Col>
+                <Col xs={12} sm>
+                  <small>Lease end</small>
+                  <p>{aptState.leaseYearEnd ?? "Unknown"}</p>
+                </Col>
+                <Col xs={12} sm>
+                  <small>Total length</small>
+                  <p>{aptState.leaseLength} months</p>
+                </Col>
+              </Row>
+            </Col>
+            <Col xs={12} md={4} className="mt-5 mt-sm-0">
+              <ClaimApartment />
             </Col>
           </Row>
         </Container>

@@ -8,17 +8,19 @@ const Button = ({
   children,
   to = "",
   submit = false,
-  onClick = () => {}
+  className,
+  onClick = () => {},
+  ...rest
 }) => {
   if (type === "link" && !externalLink) {
-    return <Link className={styles.button} to={to} onClick={onClick}>{children}</Link>;
+    return <Link className={`${styles.button} ${className}`} {...rest} to={to} onClick={onClick}>{children}</Link>;
   }
 
   if (type === "link" && externalLink) {
-    return <a className={styles.button} href={to}>{children}</a>;
+    return <a className={`${styles.button} ${className}`} {...rest} href={to}>{children}</a>;
   }
    
-  return <button type={type} className={styles.button} onClick={onClick}>{children}</button>;
+  return <button type={type} {...rest } className={`${styles.button} ${className}`} onClick={onClick}>{children}</button>;
   
   
 };

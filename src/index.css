@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
 }
 
 code {
@@ -14,10 +15,18 @@ code {
 
 * > * {
   box-sizing: border-box;
-  font-family: titling-gothic-fb, sans-serif;
+  font-family: soleil, sans-serif;
   font-weight: 200;
 }
 
 label {
   width: 100%;
+}
+
+button {
+  font-weight: 600;
+}
+
+small {
+  font-weight: 600!important;
 }

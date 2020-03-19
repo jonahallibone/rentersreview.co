@@ -3,7 +3,7 @@ import { Apartment } from "./models/Apartment";
 export const resolvers = {
   Query: {
     apartments: () => Apartment.find(),
-    getApartment: id => Apartment.findOne(id)
+    getApartment: (parent, args, context, info) => Apartment.findById(args.id)
   },
   Mutation: {
     createApartment: async (

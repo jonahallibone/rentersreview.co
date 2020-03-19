@@ -127,7 +127,13 @@ const SubmitReview = () => {
     setHasSelectedAddress("ACTION_TAKEN");
   };
 
-  const getComponent = component => {
+  const getComponent = (prev, component) => {
+    if(component.types.includes("street_number")) {
+      return {street: component.long_name}
+    }
+    if(component.types.includes("route")) {
+      return {street: `${prev.street} ${component.long_name}`}
+    }
     if (component.types.includes("sublocality")) {
       return { city: component.long_name };
     }
@@ -144,7 +150,7 @@ const SubmitReview = () => {
   const formatAddress = (components, description) => {
     console.log(components);
     return components.reduce((prev, curr) => {
-      return { ...prev, ...getComponent(curr) };
+      return { ...prev, ...getComponent(prev, curr) };
     }, {});
   };
 
@@ -163,7 +169,6 @@ const SubmitReview = () => {
     const results = await getGeocode({ address: description });
     const { lat, lng } = await getLatLng(results[0]);
     address.current.coordinates = { lat, lng };
-    address.current.street = description;
     address.current = {
       ...address.current,
       ...formatAddress(results[0].address_components)
