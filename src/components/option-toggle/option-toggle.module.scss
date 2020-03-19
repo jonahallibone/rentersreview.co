@@ -1,0 +1,32 @@
+.option_toggle {
+  display: flex;
+}
+
+.option_toggle__button {
+  padding: .7rem 1rem;
+  border: none;
+  border: 1px solid #000;
+  border-right: 0;
+
+  &:first-of-type {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+  &:last-of-type {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-right: 1px solid #000;
+  }
+
+  &:focus {
+    outline: none;
+    background: #000;
+    color: #FFF;
+  }
+}
+
+.option_toggle__button__selected {
+  outline: none;
+  background: #000;
+  color: #FFF;
+}

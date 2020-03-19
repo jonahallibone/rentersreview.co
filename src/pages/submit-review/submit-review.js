@@ -15,6 +15,7 @@ import styles from "./submit-review.module.scss";
 import Button from "../../components/button/button";
 import { Link } from "react-router-dom";
 import RatingInput from "../../components/rating-input/rating-input";
+import OptionToggle from "../../components/option-toggle/option-toggle";
 
 const ADD_REVIEW = gql`
   mutation CreateApartment(
@@ -128,11 +129,11 @@ const SubmitReview = () => {
   };
 
   const getComponent = (prev, component) => {
-    if(component.types.includes("street_number")) {
-      return {street: component.long_name}
+    if (component.types.includes("street_number")) {
+      return { street: component.long_name };
     }
-    if(component.types.includes("route")) {
-      return {street: `${prev.street} ${component.long_name}`}
+    if (component.types.includes("route")) {
+      return { street: `${prev.street} ${component.long_name}` };
     }
     if (component.types.includes("sublocality")) {
       return { city: component.long_name };
@@ -158,7 +159,7 @@ const SubmitReview = () => {
     if (!address.current?.coordinates) {
       setHasSelectedAddress("ACTION_TAKEN");
     }
-  }
+  };
 
   const handleSelect = ({ description }) => async () => {
     setValue(description, false);
@@ -247,7 +248,7 @@ const SubmitReview = () => {
                         street: address.current.street,
                         city: address.current.city,
                         state: address.current.state,
-                        zipcode: address.current.zipcode,
+                        zipcode: address.current.zipcode
                       },
                       ...values,
                       location: [
@@ -441,6 +442,22 @@ const SubmitReview = () => {
                   </Row>
                   <Row className="mt-5">
                     <Col xs={12}>
+                      <label>Would you recommend this apartment?</label>
+                      <OptionToggle
+                        options={[
+                          {
+                            name: "Yes",
+                            selected: true
+                          },
+                          {
+                            name: "No"
+                          }
+                        ]}
+                      />
+                    </Col>
+                  </Row>
+                  <Row className="mt-5">
+                    <Col xs={12}>
                       <label>Review</label>
                       <Field
                         className={styles.input_textarea}
@@ -451,7 +468,11 @@ const SubmitReview = () => {
                   </Row>
                   <Row className="mt-5">
                     <Col>
-                      <Button type="submit" onClick={verifyAddress} disabled={loading}>
+                      <Button
+                        type="submit"
+                        onClick={verifyAddress}
+                        disabled={loading}
+                      >
                         Submit Review
                       </Button>
                     </Col>
