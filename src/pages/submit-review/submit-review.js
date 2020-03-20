@@ -11,11 +11,11 @@ import usePlacesAutocomplete, {
 import Spinner from "react-svg-spinner";
 import { gql, useMutation } from "@apollo/client";
 import useOnclickOutside from "react-cool-onclickoutside";
+import { Link } from "react-router-dom";
 import styles from "./submit-review.module.scss";
 import Button from "../../components/button/button";
-import { Link } from "react-router-dom";
 import RatingInput from "../../components/rating-input/rating-input";
-import OptionToggle from "../../components/option-toggle/option-toggle";
+import ToggleInput from "../../components/toggle-input/toggle-input";
 
 const ADD_REVIEW = gql`
   mutation CreateApartment(
@@ -32,6 +32,7 @@ const ADD_REVIEW = gql`
     $landlordRating: Int!
     $neighborhoodRating: Int!
     $transportRating: Int!
+    $recommended: String!
     $review: String
   ) {
     createApartment(
@@ -48,6 +49,7 @@ const ADD_REVIEW = gql`
       landlordRating: $landlordRating
       neighborhoodRating: $neighborhoodRating
       transportRating: $transportRating
+      recommended: $recommended
       review: $review
     ) {
       apartment
@@ -98,7 +100,8 @@ const ReviewSchema = Yup.object().shape({
     .max(5),
   transportRating: Yup.number()
     .min(1, "Please choose rating!")
-    .max(5)
+    .max(5),
+  recommended: Yup.string().oneOf(["Yes", "No"], "Field must be selected!").required("Field must be selected!")
 });
 
 const SubmitReview = () => {
@@ -237,6 +240,7 @@ const SubmitReview = () => {
                 landlordRating: 0,
                 neighborhoodRating: 0,
                 transportRating: 0,
+                recommended: "",
                 review: ""
               }}
               validationSchema={ReviewSchema}
@@ -252,14 +256,14 @@ const SubmitReview = () => {
                       },
                       ...values,
                       location: [
-                        //GeoJSON requires order to be lng,lat
+                        // GeoJSON requires order to be lng,lat
                         address.current.coordinates.lng,
                         address.current.coordinates.lat
                       ],
-                      leaseYearStart: parseInt(values.leaseYearStart),
-                      leaseYearEnd: parseInt(values.leaseYearEnd),
-                      bedrooms: parseInt(values.bedrooms),
-                      bathrooms: parseInt(values.bathrooms)
+                      leaseYearStart: parseInt(values.leaseYearStart, 10),
+                      leaseYearEnd: parseInt(values.leaseYearEnd, 10),
+                      bedrooms: parseInt(values.bedrooms, 10),
+                      bathrooms: parseInt(values.bathrooms, 10)
                     }
                   });
                 }
@@ -442,17 +446,12 @@ const SubmitReview = () => {
                   </Row>
                   <Row className="mt-5">
                     <Col xs={12}>
-                      <label>Would you recommend this apartment?</label>
-                      <OptionToggle
-                        options={[
-                          {
-                            name: "Yes",
-                            selected: true
-                          },
-                          {
-                            name: "No"
-                          }
-                        ]}
+                      <Field
+                        label="Would you recommend this apartment?"
+                        name="recommended"
+                        component={ToggleInput}
+                        styles={styles}
+                        options={[{ name: "Yes" }, { name: "No" }]}
                       />
                     </Col>
                   </Row>

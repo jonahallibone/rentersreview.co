@@ -8,7 +8,7 @@ const RatingInput = ({
   field: { value, name },
   form: { touched, errors, setFieldValue }
 }) => {
-  const handleChange = value => setFieldValue(name, value);
+  const handleChange = val => setFieldValue(name, val);
 
   return (
     <label>
