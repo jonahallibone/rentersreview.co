@@ -8,7 +8,7 @@ const AppContextProvider = ({ children }) => {
     return new auth0.WebAuth({
       domain: "dev-yxi32afc.auth0.com",
       clientID: "FU9kq4KHArC6r1Q3H4WiS6JIYl0cefnk",
-      redirectUri: process.env.REACT_APP_HOST_URL,
+      redirectUri: `${process.env.REACT_APP_HOST_URL}/callback`,
       audience: "https://dev-yxi32afc.auth0.com/userinfo",
       responseType: "token id_token",
       scope: "openid email"
