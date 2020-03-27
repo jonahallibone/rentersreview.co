@@ -151,8 +151,7 @@ const SubmitReview = () => {
     }
   };
 
-  const formatAddress = (components, description) => {
-    console.log(components);
+  const formatAddress = (components) => {
     return components.reduce((prev, curr) => {
       return { ...prev, ...getComponent(prev, curr) };
     }, {});
@@ -177,7 +176,6 @@ const SubmitReview = () => {
       ...address.current,
       ...formatAddress(results[0].address_components)
     };
-    console.log(results, address);
   };
 
   const renderSuggestions = () =>
@@ -298,7 +296,7 @@ const SubmitReview = () => {
                     </Col>
                     <Col xs={12} md={6} className="mt-5">
                       <label>
-                        Apartment #
+                        Apartment # (optional)
                         <Field name="apartment" className={styles.input} />
                         {errors.apartment && touched.apartment ? (
                           <small className={styles.error}>

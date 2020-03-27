@@ -63,8 +63,6 @@ const ApartmentPage = () => {
       } = getApartment;
       averageRating.current =
         (landlordRating + neighborhoodRating + transportRating) / 3;
-
-      console.log(averageRating.current);
       setAptState(getApartment);
     }
   }, [data]);

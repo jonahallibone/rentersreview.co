@@ -37,7 +37,7 @@ const RecentReviews = () => {
       const overall = (landlordRating + neighborhoodRating + transportRating) / 3;
       return (
         <ApartmentCard id={apartment.id} key={apartment.id}>
-          <ApartmentCardHeader></ApartmentCardHeader>
+          <ApartmentCardHeader />
           <ApartmentCardContent>
             <h6 className="mb-2">{apartment.address.street}</h6>
             <div>

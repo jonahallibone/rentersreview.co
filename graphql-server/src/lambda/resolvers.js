@@ -1,9 +1,43 @@
 import { Apartment } from "./models/Apartment";
+import { Building } from "./models/Building";
 
-export const resolvers = {
+const resolvers = {
   Query: {
     apartments: () => Apartment.find(),
-    getApartment: (parent, args, context, info) => Apartment.findById(args.id)
+    getApartment: async (parent, args, { id }, info) => {
+      const uuid = await id;
+      if (uuid) {
+        return Apartment.findById(args.id);
+      }
+    },
+    SearchBuildings: async (parent, args, { id }, info) => {
+      const uuid = await id;
+      const results = await Building.aggregate([
+        {
+          $searchBeta: {
+            text: {
+              query: args.query,
+              path: ["streetNumber", "street", "zipcode"]
+            }
+          }
+        },
+        {
+          $facet: {
+            paginatedResults: [{ $skip: 0 }, { $limit: 5 }],
+            totalCount: [
+                {
+                  $count: 'count'
+                }
+              ]
+          }
+        }
+      ]);
+
+      return {
+        buildings: results[0].paginatedResults,
+        total: results[0].totalCount[0].count
+      };
+    }    
   },
   Mutation: {
     createApartment: async (
@@ -22,11 +56,11 @@ export const resolvers = {
         landlordRating,
         neighborhoodRating,
         transportRating,
-        review,
+        review
       }
     ) => {
       const newApartment = new Apartment({
-        address: {...address},
+        address: { ...address },
         location: {
           type: "Point",
           coordinates: location
@@ -50,3 +84,5 @@ export const resolvers = {
     }
   }
 };
+
+export { resolvers };

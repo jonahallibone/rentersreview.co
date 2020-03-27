@@ -1,36 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {
-  ApolloClient,
-  ApolloProvider,
-  HttpLink,
-  InMemoryCache
-} from "@apollo/client";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
-import "./index.css";
-import App from "./App";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./index.css";
 
 import * as serviceWorker from "./serviceWorker";
-
-const client = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: new HttpLink({
-    uri: "/.netlify/functions/graphql"
-  })
-});
+import { AppContextProvider } from "./AppContext";
+import ApolloWrapper from "./ApolloWrapper";
 
 ReactDOM.render(
-  <ApolloProvider client={client}>
-    <Router>
-      <App />
-    </Router>
-  </ApolloProvider>,
+  <AppContextProvider>
+    <ApolloWrapper />
+  </AppContextProvider>,
   document.getElementById("root")
 );
 

@@ -1,11 +1,13 @@
 import React from "react";
-import {Switch, Route} from "react-router-dom";
-import styles from "./App.module.scss";
+import { Switch, Route } from "react-router-dom";
 import Layout from "./components/layout/layout";
 import Navigation from "./components/navigation/navigation";
 import Home from "./pages/home/home";
 import SubmitReview from "./pages/submit-review/submit-review";
-import ApartmentPage from "./pages/apartment-page/apartment-page"
+import ApartmentPage from "./pages/apartment-page/apartment-page";
+import SignUp from "./pages/sign-up/sign-up";
+import Login from "./pages/login/login";
+import Callback from "./pages/callback/callback";
 
 function App() {
   return (
@@ -20,6 +22,15 @@ function App() {
         </Route>
         <Route path="/apartment/:id">
           <ApartmentPage />
+        </Route>
+        <Route path="/sign-up">
+          <SignUp />
+        </Route>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/callback">
+          <Callback />
         </Route>
       </Switch>
     </Layout>

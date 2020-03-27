@@ -1,12 +1,29 @@
 import { gql } from "apollo-server";
 
-export const typeDefs = gql`
+const typeDefs = gql`
 
   scalar Coordinates
 
   type Query {
     apartments: [Apartment!]!
     getApartment(id: ID!): Apartment!
+    getBuilding(id: ID!): Building
+    SearchBuildings(query: String!): BuildingSearch!
+  }
+
+  type Building {
+    _id: ID!
+    buildingId: String!
+    street: String!
+    borough: String!
+    streetNumber: String!,
+    zipcode: String!,
+    location: Coordinates!
+  }
+
+  type BuildingSearch {
+    buildings: [Building!]!
+    total: String!
   }
 
   type Address {
@@ -60,3 +77,5 @@ export const typeDefs = gql`
     ): Apartment!
   }
 `;
+
+export default typeDefs;
