@@ -1,0 +1,44 @@
+@mixin violation-class {
+  font-size: .875rem;
+  border-radius: 5px;
+  padding: .25rem .5rem;
+  font-weight: bold;
+  color: #FFF;
+  margin-right: .5rem;
+}
+
+.violation_class__a {
+  @include violation-class;
+  background-color: #00b894;
+}
+
+.violation_class__b {
+  @include violation-class;
+  background-color: #fdcb6e;
+}
+
+.violation_class__c {
+  @include violation-class;
+  background-color: #e17055;
+}
+
+.violation_class__apartment {
+  @include violation-class;
+  background: #00cec9;
+}
+
+.violation_class__default {
+  @include violation-class;
+  background: #DDD;
+  color: #FFF;
+}
+
+.violation_class__status_close {
+  @include violation-class;
+  background: #d63031;
+}
+
+.violation_class__status_open {
+  @include violation-class;
+  background: #74b9ff;
+}

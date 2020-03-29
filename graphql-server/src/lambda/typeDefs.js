@@ -1,23 +1,33 @@
 import { gql } from "apollo-server";
 
 const typeDefs = gql`
-
   scalar Coordinates
+  scalar Date
 
   type Query {
     apartments: [Apartment!]!
     getApartment(id: ID!): Apartment!
-    getBuilding(id: ID!): Building
+    getBuilding(id: ID!): Building!
     SearchBuildings(query: String!): BuildingSearch!
+    getBuildingViolations(buildingId: ID!): [Violation!]!
+  }
+
+  type Violation {
+    violationid: ID!
+    apartment: String!
+    class: String!
+    inspectionDate: Date!
+    description:  String!
+    status: String!
   }
 
   type Building {
     _id: ID!
-    buildingId: String!
+    buildingId: ID!
     street: String!
     borough: String!
-    streetNumber: String!,
-    zipcode: String!,
+    streetNumber: String!
+    zipcode: String!
     location: Coordinates!
   }
 

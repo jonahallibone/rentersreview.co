@@ -8,7 +8,8 @@ import jwt from "jsonwebtoken";
 import jwksClient from "jwks-rsa";
 import { resolvers } from "./resolvers";
 import typeDefs from "./typeDefs";
-import { geoPointScalar } from "./scalars/Geopoint";
+import geoPointScalar from "./scalars/Geopoint";
+import dateScalar from "./scalars/Date";
 
 const client = jwksClient({
   jwksUri: `https://dev-yxi32afc.auth0.com/.well-known/jwks.json`
@@ -44,7 +45,7 @@ startServer();
 
 const server = new ApolloServer({
   schema: makeExecutableSchema({
-    typeDefs: { ...typeDefs, geoPointScalar },
+    typeDefs: { ...typeDefs, geoPointScalar, dateScalar },
     resolvers
   }),
   context: ({ event }) => {

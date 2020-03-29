@@ -13,12 +13,12 @@
   }
 
   &:not(.dropdown__focus):hover {
-    border: 1px solid #1e90ff;
-    color: #1e90ff;
+    border: 1px solid #0984e3;
+    color: #0984e3;
   }
 
   &:active {
-    box-shadow: 0 0 0 3px rgba($color: #1e90ff, $alpha: .5);
+    box-shadow: 0 0 0 3px rgba($color: #0984e3, $alpha: .5);
   }
 }
 
@@ -41,12 +41,12 @@
 }
 
 .dropdown__blue_bg {
-  background: #1e90ff;
+  background: #0984e3;
   color: #FFF;
   border: 1px solid transparent;
 
   &:not(.dropdown__focus):hover {
-    border: 1px solid #1E90FF;
+    border: 1px solid #0984e3;
     color: white;
   }
 
@@ -96,7 +96,7 @@
 
   &:hover {
     color: #1e90ff;
-    background: rgba($color: #1e90ff, $alpha: .1);
+    background: rgba($color: #0984e3, $alpha: .1);
     text-decoration: none;
   }
 
@@ -112,8 +112,8 @@
 }
 
 .dropdown__focus {
-  box-shadow: 0 0 0 3px rgba($color: #1e90ff, $alpha: .5);
-  color: #1e90ff;
+  box-shadow: 0 0 0 3px rgba($color: #0984e3, $alpha: .5);
+  color: #0984e3;
   ul {
     visibility: visible;
   }

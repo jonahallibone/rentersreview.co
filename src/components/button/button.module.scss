@@ -1,5 +1,5 @@
 .button {
-  background: #000;
+  background: #0984e3;
   color: #FFF;
   border-radius: 5px;
   padding: .7rem .65rem;
@@ -7,6 +7,10 @@
   border: none;
   transition: .345s ease background;
   font-weight: 600;
+  display: inline-flex;
+  justify-content: center;
+  align-self: center;
+  align-items: center;
   
   &:focus {
     outline: none;
@@ -15,6 +19,6 @@
   &:hover {
     text-decoration: none;
     color: #FFF;
-    background: #333;
+    background: #74b9ff;
   }
 }

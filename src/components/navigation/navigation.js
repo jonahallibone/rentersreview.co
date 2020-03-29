@@ -23,9 +23,6 @@ const Navigation = () => {
             </Link>
           </Col>
           <Col xs className="d-flex justify-content-end">
-            <Button className="mr-2" type="link" to="/submit-review">
-              Add a review
-            </Button>
             {isLoggedIn ? (
               <Dropdown
                 border={false}
@@ -51,6 +48,9 @@ const Navigation = () => {
                 Log In
               </Button>
             )}
+            <Button className="ml-2" type="link" to="/submit-review">
+              Add a review
+            </Button>
           </Col>
         </Row>
       </Container>

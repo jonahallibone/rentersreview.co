@@ -1,8 +1,8 @@
-import { GraphQLScalarType } from 'graphql';
+import { GraphQLScalarType } from "graphql";
 
-export const geoPointScalar  = new GraphQLScalarType({
-  name: 'Coordinates',
-  description: 'A set of coordinates. x, y',
+const geoPointScalar = new GraphQLScalarType({
+  name: "Coordinates",
+  description: "A set of coordinates. x, y",
   parseValue(value) {
     return value;
   },
@@ -11,5 +11,7 @@ export const geoPointScalar  = new GraphQLScalarType({
   },
   parseLiteral(ast) {
     return ast.value;
-  },
-})
+  }
+});
+
+export default geoPointScalar;
