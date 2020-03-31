@@ -1,14 +1,14 @@
 import React from "react";
 import { useQuery, gql } from "@apollo/client";
 import moment from "moment";
-import styles from "./building-violations.module.scss";
-import ViolationsLoader from "./violations-loader";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import ViolationClass from "../violation-class/violation-class";
 import { ArrowRight } from "react-feather";
+import styles from "./building-violations.module.scss";
+import ViolationsLoader from "./violations-loader";
+import ViolationClass from "../violation-class/violation-class";
 
-const GET_VIOLATIONS = gql`
+const GET_PREVIEW_VIOLATIONS = gql`
   query getBuildingViolations($buildingId: ID!) {
     getBuildingViolations(buildingId: $buildingId) {
       violationid
@@ -21,8 +21,21 @@ const GET_VIOLATIONS = gql`
   }
 `;
 
-const BuildingViolations = ({ buildingId }) => {
-  const { loading, error, data } = useQuery(GET_VIOLATIONS, {
+const GET_ALL_VIOLATIONS = gql`
+query getAllBuildingViolations($buildingId: ID!) {
+  getAllBuildingViolations(buildingId: $buildingId) {
+    violationid
+    apartment
+    class
+    inspectionDate
+    description
+    status
+  }
+}
+`;
+
+const BuildingViolations = ({ buildingId, preview = true }) => {
+  const { loading, error, data } = useQuery(preview ? GET_PREVIEW_VIOLATIONS : GET_ALL_VIOLATIONS, {
     variables: { buildingId }
   });
 
@@ -95,7 +108,7 @@ const BuildingViolations = ({ buildingId }) => {
   };
 
   return (
-    <div className="mt-5">
+    <div className>
       <h6>NYC Housing Department Violations</h6>
       <ViolationList />
     </div>

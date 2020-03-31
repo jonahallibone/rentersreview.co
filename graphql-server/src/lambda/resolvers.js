@@ -17,7 +17,7 @@ const resolvers = {
         const building = await Building.findById(args.id);
         return building;
       } catch (err) {
-        console.log(err);
+        console.error(err);
         throw new Error(err);
       }
     },
@@ -31,17 +31,17 @@ const resolvers = {
       const query = qs.stringify(
         {
           $where: `buildingid=${args.buildingId}`,
-          $select: "class,apartment,inspectiondate,novdescription,violationid,violationstatus", 
+          $select:
+            "class,apartment,inspectiondate,novdescription,violationid,violationstatus",
           $order: "inspectiondate DESC",
           $limit: 3
         },
         { encodeValuesOnly: true }
       );
-    
+
       try {
         const violations = await nycViolationsUrl.get(`?${query}`);
         const { data } = violations;
-        console.log(data);
 
         return data.map(violation => ({
           status: violation.violationstatus ?? "",
@@ -52,7 +52,7 @@ const resolvers = {
           description: violation.novdescription ?? "Unknown"
         }));
       } catch (err) {
-        console.log(err);
+        console.error(err);
         throw new Error(err);
       }
     },
@@ -61,9 +61,20 @@ const resolvers = {
       const results = await Building.aggregate([
         {
           $searchBeta: {
-            text: {
-              query: args.query,
-              path: ["streetNumber", "street", "zipcode"]
+            compound: {
+              must: {
+                text: {
+                  query: args.query.split(" "),
+                  path: ["streetNumber"]
+                }
+              },
+              should: {
+                phrase: {
+                  query: args.query.split(" "),
+                  path: ["street"],
+                  slop: 0
+                }
+              }
             }
           }
         },

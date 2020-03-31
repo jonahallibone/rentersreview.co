@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLazyQuery, gql } from "@apollo/client";
 import { Link } from "react-router-dom";
+import LottieLoader from "../lottie-loader/lottie-loader";
 import styles from "./homepage-search.module.scss";
+import { useMemo } from "react";
 
 const SEARCH_BUILDINGS = gql`
   query SearchBuildings($query: String!) {
@@ -43,6 +45,8 @@ const HomepageSearch = () => {
     }
   });
 
+  const memLoading = useMemo(() => loading, [loading]);
+
   useEffect(() => {
     if (searchTerm.length) {
       currentReq.current = new Promise(resolve => {
@@ -69,8 +73,10 @@ const HomepageSearch = () => {
         placeholder="123 Appleseed Lane"
       />
 
-      <button className={styles.homepage_input__button}>Search</button>
-      {results?.length > 0 && (
+      <button disabled={loading} className={styles.homepage_input__button}>
+        {memLoading ? <LottieLoader /> : "Search"}
+      </button>
+      {results?.length > 0 && !loading && (
         <ul className={styles.homepage_input__search_results}>
           {results.map(result => (
             <li key={result._id} className={styles.homepage_input__search_li}>

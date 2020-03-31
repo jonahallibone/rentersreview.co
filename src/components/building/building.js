@@ -1,6 +1,13 @@
 import React from "react";
 import { useQuery, gql } from "@apollo/client";
-import { useParams, Link } from "react-router-dom";
+import {
+  useParams,
+  Switch,
+  Link,
+  Route,
+  useRouteMatch,
+  NavLink
+} from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -30,6 +37,14 @@ const Building = () => {
   const { loading, error, data } = useQuery(GET_BUILDING, {
     variables: { id }
   });
+
+  const match = useRouteMatch({
+    path: "/building/:id",
+    strict: true,
+    sensitive: true
+  });
+
+  console.log(match);
 
   if (loading) {
     return <div></div>;
@@ -104,7 +119,41 @@ const Building = () => {
           </Row>
           <Row>
             <Col xs={12}>
-              <Violations buildingId={building.buildingId} />
+              <div className={styles.building__tabs}>
+                <NavLink
+                  exact
+                  className={styles.building__tab}
+                  activeClassName={styles.building__tab__selected}
+                  to={`${match.url}/`}
+                >
+                  Overview
+                </NavLink>
+                <NavLink
+                  className={styles.building__tab}
+                  activeClassName={styles.building__tab__selected}
+                  to={`${match.url}/reviews`}
+                >
+                  Reviews
+                </NavLink>
+                <NavLink
+                  className={styles.building__tab}
+                  activeClassName={styles.building__tab__selected}
+                  to={`${match.url}/violations`}
+                >
+                  Violations
+                </NavLink>
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12}>
+              <Route exact path={`${match.path}`}>
+                <Violations preview buildingId={building.buildingId} />
+              </Route>
+              <Route path={`${match.path}/violations`}>
+                <Violations buildingId={building.buildingId} />
+              </Route>
+              <Route path={`${match.path}/reviews`}>Reviews</Route>
             </Col>
           </Row>
         </Col>

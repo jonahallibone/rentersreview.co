@@ -1,7 +1,11 @@
 import React from "react";
 import styles from "./violation-class.module.scss";
 
-const ViolationClass = ({ violationClass, type="violation", open = "false" }) => {
+const ViolationClass = ({
+  violationClass,
+  type = "violation",
+  open = "false"
+}) => {
   const getClass = () => {
     if (type === "violation") {
       switch (violationClass) {
@@ -15,32 +19,37 @@ const ViolationClass = ({ violationClass, type="violation", open = "false" }) =>
           return styles.violation_class__default;
       }
     }
-    
-    if(type === "apartment") {
+
+    if (type === "apartment") {
       return styles.violation_class__apartment;
     }
 
-    if(open) {
-      return styles.violation_class__status_open
+    if (open === "Open") {
+      return styles.violation_class__status_open;
     }
-    
-    return styles.violation_class__status_close
 
+    return styles.violation_class__status_close;
   };
 
-  const getLabel = () => {
-    if(type === "violation") {
-      return "Class"
+  const getLabel = violationClass => {
+    if (type === "violation") {
+      return `Class ${violationClass}`;
     }
 
-    if(type === "apartment") {
-      return "Apartment"
+    if (type === "apartment") {
+      return `Apartment ${violationClass}`;
     }
 
-    return ""
-  }
+    if (type === "status" && open === "Close") {
+      return "Closed";
+    }
 
-  return <span className={getClass()}>{getLabel()} {violationClass}</span>;
+    if (type === "status" && open === "Open") {
+      return "Open";
+    }
+  };
+
+  return <span className={getClass()}>{getLabel(violationClass)}</span>;
 };
 
 export default ViolationClass;

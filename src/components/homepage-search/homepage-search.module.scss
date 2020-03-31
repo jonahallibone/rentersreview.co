@@ -19,12 +19,18 @@
 
 .homepage_input__button {
   padding: .75rem 1rem;
-  background: #000;
+  background: #0984e3;
   color: #FFF;
   border-radius: 5px;
   border: none;
   outline: none;
   transition: .345s ease-in-out background;
+  height: 48px;
+  min-width: 85px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 
   &:active,
   &:focus {
@@ -69,6 +75,5 @@
     color: #000;
     text-decoration: none;
     background: #f1f2f6;
-
   }
 }
