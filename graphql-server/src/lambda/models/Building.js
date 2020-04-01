@@ -8,6 +8,7 @@ const Building = mongoose.model(
     borough: String,
     streetNumber: String,
     zipcode: String,
+    complaints: [String],
     location: {
       type: {
         type: String,

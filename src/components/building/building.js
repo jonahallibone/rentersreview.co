@@ -2,7 +2,6 @@ import React from "react";
 import { useQuery, gql } from "@apollo/client";
 import {
   useParams,
-  Switch,
   Link,
   Route,
   useRouteMatch,
@@ -44,8 +43,6 @@ const Building = () => {
     sensitive: true
   });
 
-  console.log(match);
-
   if (loading) {
     return <div></div>;
   }
@@ -55,10 +52,6 @@ const Building = () => {
   }
 
   const { getBuilding: building } = data;
-
-  const Violations = ({ buildingId }) => {
-    return <BuildingViolations buildingId={buildingId} />;
-  };
 
   return (
     <Container>
@@ -148,12 +141,12 @@ const Building = () => {
           <Row>
             <Col xs={12}>
               <Route exact path={`${match.path}`}>
-                <Violations preview buildingId={building.buildingId} />
-              </Route>
-              <Route path={`${match.path}/violations`}>
-                <Violations buildingId={building.buildingId} />
+                <BuildingViolations preview buildingId={building.buildingId} />
               </Route>
               <Route path={`${match.path}/reviews`}>Reviews</Route>
+              <Route path={`${match.path}/violations`}>
+                <BuildingViolations buildingId={building.buildingId} />
+              </Route>
             </Col>
           </Row>
         </Col>

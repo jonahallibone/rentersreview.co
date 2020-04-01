@@ -1,16 +1,14 @@
 import React from "react";
 import { useQuery, gql } from "@apollo/client";
-import moment from "moment";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import { ArrowRight } from "react-feather";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import styles from "./building-violations.module.scss";
 import ViolationsLoader from "./violations-loader";
-import ViolationClass from "../violation-class/violation-class";
+import Violation from "../violation/violation";
 
-const GET_PREVIEW_VIOLATIONS = gql`
-  query getBuildingViolations($buildingId: ID!) {
-    getBuildingViolations(buildingId: $buildingId) {
+const GET_VIOLATIONS = gql`
+  query getBuildingViolations($buildingId: ID!, $limit: Int) {
+    getBuildingViolations(buildingId: $buildingId, limit: $limit) {
       violationid
       apartment
       class
@@ -21,22 +19,16 @@ const GET_PREVIEW_VIOLATIONS = gql`
   }
 `;
 
-const GET_ALL_VIOLATIONS = gql`
-query getAllBuildingViolations($buildingId: ID!) {
-  getAllBuildingViolations(buildingId: $buildingId) {
-    violationid
-    apartment
-    class
-    inspectionDate
-    description
-    status
-  }
-}
-`;
+const BuildingViolations = ({ buildingId, preview = false }) => {
+  const { loading, error, data } = useQuery(GET_VIOLATIONS, {
+    variables: { buildingId, limit: preview ? 3 : 10000 }
+  });
 
-const BuildingViolations = ({ buildingId, preview = true }) => {
-  const { loading, error, data } = useQuery(preview ? GET_PREVIEW_VIOLATIONS : GET_ALL_VIOLATIONS, {
-    variables: { buildingId }
+  const history = useHistory();
+  const match = useRouteMatch({
+    path: "/building/:id",
+    strict: true,
+    sensitive: true
   });
 
   if (error) {
@@ -47,39 +39,6 @@ const BuildingViolations = ({ buildingId, preview = true }) => {
       </h6>
     );
   }
-
-  const ellipsisText = (description, maxLength) => {
-    const { length } = description;
-    if (length > maxLength) {
-      const substr = description.substr(0, maxLength - 3);
-      return `${substr}...`;
-    }
-
-    return description;
-  };
-
-  const Violation = ({ violation }) => (
-    <li className={styles.violation__item}>
-      <Row className="justify-content-between">
-        <Col className="d-flex align-items-center">
-          <ViolationClass type="violation" violationClass={violation.class} />
-          <ViolationClass open={violation.status} type="status" violationClass={violation.status} />
-          {violation.apartment !== "Unknown" && (
-            <ViolationClass
-              type="apartment"
-              violationClass={violation.apartment}
-            />
-          )}
-          <small className={styles.violation__date}>
-            {moment(violation.inspectionDate, "YYYYMMDD").fromNow()}
-          </small>
-        </Col>
-      </Row>
-      <p className={styles.violation__description}>
-        {ellipsisText(violation.description, 120)}
-      </p>
-    </li>
-  );
 
   const ViolationList = () => {
     if (loading || !buildingId) {
@@ -97,8 +56,14 @@ const BuildingViolations = ({ buildingId, preview = true }) => {
         {getBuildingViolations.map(violation => (
           <Violation key={violation.violationid} violation={violation} />
         ))}
-        {getBuildingViolations.length && (
-          <li className={styles.more_violations}>
+        {getBuildingViolations.length && preview && (
+          <li
+            role="option"
+            aria-selected
+            onKeyPress={() => {}}
+            onClick={() => history.push(`${match.url}/violations`)}
+            className={styles.more_violations}
+          >
             See more violations{" "}
             <ArrowRight className="ml-2" strokeWidth={3} size={16} />
           </li>

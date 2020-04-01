@@ -7,7 +7,7 @@
     getApartment(id: ID!): Apartment!
     getBuilding(id: ID!): Building!
     SearchBuildings(query: String!): BuildingSearch!
-    getBuildingViolations(buildingId: ID!): [Violation!]!
+    getBuildingViolations(buildingId: ID!, limit: Int): [Violation!]!
   }
 
   type Violation {
@@ -15,7 +15,7 @@
     apartment: String!
     class: String!
     inspectionDate: Date!
-    description:  String!
+    description: String!
     status: String!
   }
 

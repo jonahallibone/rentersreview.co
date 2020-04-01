@@ -1,0 +1,31 @@
+.violation__item {
+  padding: 1rem;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  cursor: pointer;
+
+  &:first-of-type {
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+  }
+
+  &:last-child,
+  &:last-of-type {
+    border-bottom: 1px solid #ddd;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+  }
+}
+
+.violation__date {
+  color: #636e72;
+  margin-bottom: 0;
+  margin-left: 0.5rem;
+}
+
+.violation__description {
+  color: #333;
+  font-weight: 500;
+  margin: 1rem 0 0 0;
+}

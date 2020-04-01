@@ -34,7 +34,7 @@ const resolvers = {
           $select:
             "class,apartment,inspectiondate,novdescription,violationid,violationstatus",
           $order: "inspectiondate DESC",
-          $limit: 3
+          $limit: args.limit
         },
         { encodeValuesOnly: true }
       );
