@@ -10,6 +10,7 @@ const typeDefs = gql`
     getBuilding(id: ID!): Building!
     SearchBuildings(query: String!): BuildingSearch!
     getBuildingViolations(buildingId: ID!, limit: Int): [Violation!]!
+    getBuildingComplaints(buildingId: ID!): [Complaint!]!
   }
 
   type Violation {
@@ -66,6 +67,20 @@ const typeDefs = gql`
     neighborhoodRating: Int!
     transportRating: Int!
     review: String!
+  }
+
+  type Complaint {
+    complaintId: ID!
+    problemId: ID!
+    unitType: String!
+    spaceType: String!
+    urgency: String!
+    majorCategory: String!
+    minorCategory: String!
+    code: String!
+    status: String!
+    statusDate: Date,
+    statusDescription: String!
   }
 
   type Mutation {

@@ -38,7 +38,11 @@ const Violation = ({ violation }) => {
       onClick={() => expand(violation.violationid)}
     >
       <Row className="justify-content-between">
-        <Col className="d-flex align-items-center">
+        <Col
+          xs={12}
+          sm={6}
+          className="d-flex order-2 order-sm-1 align-items-center"
+        >
           <ViolationClass type="violation" violationClass={violation.class} />
           <ViolationClass
             open={violation.status}
@@ -51,6 +55,12 @@ const Violation = ({ violation }) => {
               violationClass={violation.apartment}
             />
           )}
+        </Col>
+        <Col
+          xs={12}
+          sm={6}
+          className="d-flex order-1 order-sm-2 justify-content-start justify-content-sm-end flex-shrink-1 align-items-center"
+        >
           <small className={styles.violation__date}>
             {moment(violation.inspectionDate, "YYYYMMDD").fromNow()}
           </small>

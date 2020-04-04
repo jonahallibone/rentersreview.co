@@ -21,7 +21,10 @@
 .violation__date {
   color: #636e72;
   margin-bottom: 0;
-  margin-left: 0.5rem;
+
+  @media (min-width: 320px) {
+    margin-bottom: .5rem;
+  }
 }
 
 .violation__description {

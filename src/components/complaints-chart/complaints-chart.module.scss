@@ -1,0 +1,17 @@
+.chart_data {
+  height: 300px;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.chart_tooltip {
+  background: #FFF;
+  border: 1px solid #DDD;
+  border-radius: 5px;
+  font-weight: bold;
+  padding: 5px;
+}

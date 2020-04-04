@@ -3,7 +3,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Link, useHistory } from "react-router-dom";
-import { LogOut, ChevronDown, User } from "react-feather";
+import { LogOut, ChevronDown, User, Menu } from "react-feather";
 import Button from "../button/button";
 import styles from "./navigation.module.scss";
 import AppContext from "../../AppContext";
@@ -22,7 +22,7 @@ const Navigation = () => {
               <h6 className={styles.logo}>Renters Review</h6>
             </Link>
           </Col>
-          <Col xs className="d-flex justify-content-end">
+          <Col xs className="d-none d-md-flex hidden-xs justify-content-end">
             {isLoggedIn ? (
               <Dropdown
                 border={false}
@@ -51,6 +51,9 @@ const Navigation = () => {
             <Button className="ml-2" type="link" to="/submit-review">
               Add a review
             </Button>
+          </Col>
+          <Col xs className="d-flex d-md-none justify-content-end">
+           <Menu /> 
           </Col>
         </Row>
       </Container>

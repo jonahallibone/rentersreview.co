@@ -17,6 +17,8 @@ import ClaimApartment from "../claim-apartment/claim-apartment";
 import ReviewMap from "../review-map/review-map";
 import Button from "../button/button";
 import BuildingViolations from "../building-violations/building-violations";
+import ComplaintsChart from "../complaints-chart/complaints-chart";
+
 
 const GET_BUILDING = gql`
   query GetBuilding($id: ID!) {
@@ -141,6 +143,7 @@ const Building = () => {
           <Row>
             <Col xs={12}>
               <Route exact path={`${match.path}`}>
+                <ComplaintsChart building={building} />
                 <BuildingViolations preview buildingId={building.buildingId} />
               </Route>
               <Route path={`${match.path}/reviews`}>Reviews</Route>

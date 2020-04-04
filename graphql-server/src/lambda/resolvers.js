@@ -56,6 +56,86 @@ const resolvers = {
         throw new Error(err);
       }
     },
+    getBuildingComplaints: async (parent, args, { id }) => {
+      const building = await Building.findOne({ buildingId: args.buildingId });
+      
+      if(!building || !building.complaints.length) {
+        return []
+      }
+
+      const nycComplaintsUrl = axios.create({
+        baseURL: "https://data.cityofnewyork.us/resource/a2nx-4u46.json",
+        timeout: 10000,
+        headers: { "X-App-Token": "QAbvk83yxp1J8aM76x7YlaJtt" }
+      });
+
+      const fields = [
+        "complaintid",
+        "problemid",
+        "unittype",
+        "spacetype",
+        "type",
+        "majorcategory",
+        "minorcategory",
+        "code",
+        "status",
+        "statusdate",
+        "statusdescription"
+      ];
+
+      const query = qs.stringify(
+        {
+          $where: `complaintid in(${building.complaints.join(",")})`,
+          $select: fields.join(","),
+          $order: "statusdate DESC",
+          $limit: args.limit
+        },
+        { encodeValuesOnly: true }
+      );
+
+      try {
+        const complaints = await nycComplaintsUrl.get(`?${query}`);
+        const { data } = complaints;
+
+        if (!data.length) {
+          return [];
+        }
+
+        return data.map(complaint => {
+          const {
+            complaintid,
+            problemid,
+            unittype,
+            spacetype,
+            type,
+            majorcategory,
+            minorcategory,
+            code,
+            status,
+            statusdate,
+            statusdescription
+          } = complaint;
+
+          return {
+            complaintId: complaintid,
+            problemId: problemid,
+            unitType: unittype,
+            spaceType: spacetype,
+            urgency: type,
+            majorCategory: majorcategory,
+            minorCategory: minorcategory,
+            code,
+            status,
+            statusDate: statusdate,
+            statusDescription: statusdescription
+          };
+        });
+      } catch (err) {
+        console.error(err);
+        throw new Error(err);
+      }
+    },
+
     SearchBuildings: async (parent, args, { id }) => {
       const user_id = await id;
       const results = await Building.aggregate([
