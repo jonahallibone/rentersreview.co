@@ -2,6 +2,10 @@ import React, { useEffect } from "react";
 import { useQuery, gql } from "@apollo/client";
 import { ResponsiveLine } from "@nivo/line";
 import styles from "./complaints-chart.module.scss";
+import ComplaintsChartLoader from "./complaint-chart-loader";
+import ComplaintsSummary from "../complaints-summary/complaints-summary";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 
 const GET_COMPLAINTS = gql`
   query getBuildingComplaints($buildingId: ID!) {
@@ -25,7 +29,7 @@ const ComplaintsChart = ({ building }) => {
   });
 
   if (loading) {
-    return "Loading...";
+    return <ComplaintsChartLoader />;
   }
 
   const { getBuildingComplaints } = data;
@@ -58,7 +62,6 @@ const ComplaintsChart = ({ building }) => {
   );
 
   const maxY = dataFormat.reduce((prev, curr) => {
-    console.log(prev, curr.y);
     if (curr.y > prev) {
       return curr.y;
     }
@@ -83,7 +86,7 @@ const ComplaintsChart = ({ building }) => {
   const Chart = () => (
     <ResponsiveLine
       data={chartData}
-      margin={{ top: 25, right: 25, bottom: 25, left: 25 }}
+      margin={{ top: 25, right: 16, bottom: 25, left: 25 }}
       xScale={{ type: "point" }}
       yScale={{
         type: "linear",
@@ -109,8 +112,9 @@ const ComplaintsChart = ({ building }) => {
         legendOffset: -40,
         legendPosition: "middle"
       }}
-      enableGridY
-      enableGridX={false}
+      enableGridY={false}
+      enableGridX
+      enableArea
       pointSize={5}
       colors={["#1e90ff"]}
       pointBorderWidth={2}
@@ -122,14 +126,24 @@ const ComplaintsChart = ({ building }) => {
     />
   );
 
-  return (
-    <div className={styles.chart_data}>
-      {getBuildingComplaints.length ? (
-        <Chart />
-      ) : (
-        "No complaints found for this building."
-      )}
-    </div>
+  return getBuildingComplaints.length ? (
+    <Row>
+      <Col xs={12}>
+        <h6 className="mb-2">Complaints</h6>
+        <div className={styles.complaints__chart}>
+          <div className={styles.chart_data}>
+            <Chart />
+          </div>
+          <ComplaintsSummary complaintData={getBuildingComplaints} />
+        </div>
+      </Col>
+    </Row>
+  ) : (
+    <Row>
+      <Col className={styles.chart_data}>
+        <strong>No complaints found for this building</strong>
+      </Col>
+    </Row>
   );
 };
 
