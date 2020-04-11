@@ -18,12 +18,12 @@ const ApolloWrapper = () => {
   const { silentAuth } = useContext(AppContext);
 
   const tokenRef = useRef(null);
-
+  const getAuth = useMemo(() => silentAuth(), [silentAuth])
   const authLink = useMemo(
     () =>
       setContext(async (_, { headers }) => {
         if(!tokenRef.current) {
-          const { idToken } = await silentAuth();
+          const { idToken } = await getAuth;
           tokenRef.current = idToken;
         }
         
@@ -34,7 +34,7 @@ const ApolloWrapper = () => {
           }
         };
       }),
-    [silentAuth]
+    [getAuth]
   );
 
   const client = useMemo(() => {

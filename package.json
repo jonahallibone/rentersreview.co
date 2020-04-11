@@ -23,6 +23,7 @@
     "dotenv": "^8.2.0",
     "encoding": "^0.1.12",
     "formik": "^2.1.4",
+    "geocodio-library-node": "^1.1.0",
     "gotrue-js": "^0.9.25",
     "graphql": "^14.6.0",
     "graphql-geojson": "^1.0.0",

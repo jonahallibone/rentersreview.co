@@ -1,15 +1,25 @@
 import axios from "axios";
 import qs from "qs";
-import { Apartment } from "./models/Apartment";
+import { UserInputError } from "apollo-server";
+import Geocodio from "geocodio-library-node";
+import Review from "./models/Review";
 import { Building } from "./models/Building";
+
+const geocoder = new Geocodio("906e226650616fafe25e522fe92a692101a2021");
 
 const resolvers = {
   Query: {
-    apartments: () => Apartment.find(),
+    reviews: async () => {
+      const res = await Review.find()
+        .limit(10)
+        .populate("building");
+      console.log(res);
+      return res;
+    },
     getApartment: async (parent, args, { id }) => {
       const user_id = await id;
       if (user_id) {
-        return Apartment.findById(args.id);
+        return Review.findById(args.id);
       }
     },
     getBuilding: async (parent, args, { id }) => {
@@ -58,9 +68,9 @@ const resolvers = {
     },
     getBuildingComplaints: async (parent, args, { id }) => {
       const building = await Building.findOne({ buildingId: args.buildingId });
-      
-      if(!building || !building.complaints.length) {
-        return []
+
+      if (!building || !building.complaints.length) {
+        return [];
       }
 
       const nycComplaintsUrl = axios.create({
@@ -177,7 +187,7 @@ const resolvers = {
     }
   },
   Mutation: {
-    createApartment: async (
+    createReview: async (
       _,
       {
         address,
@@ -196,28 +206,103 @@ const resolvers = {
         review
       }
     ) => {
-      const newApartment = new Apartment({
-        address: { ...address },
-        location: {
-          type: "Point",
-          coordinates: location
-        },
-        apartment,
-        rent,
-        bedrooms,
-        bathrooms,
-        amenities,
-        leaseLength,
-        leaseYearStart,
-        leaseYearEnd,
-        landlordRating,
-        neighborhoodRating,
-        transportRating,
-        review
-      });
+      const req = {
+        streetNumber: address.streetNumber,
+        street: address.street.toUpperCase(),
+        borough: address.city.toUpperCase()
+      };
 
-      await newApartment.save();
-      return newApartment;
+      try {
+        const building = await Building.findOne(req);
+
+        const getBuildingId = async doc => {
+          if (!doc) {
+            const nycHpdBuildingsUrl = axios.create({
+              baseURL: "https://data.cityofnewyork.us/resource/kj4p-ruqc.json",
+              timeout: 10000,
+              headers: { "X-App-Token": "QAbvk83yxp1J8aM76x7YlaJtt" }
+            });
+
+            const fields = ["buildingid"];
+
+            const query = qs.stringify(
+              {
+                $where: `streetname='${address.street.toUpperCase()}' AND housenumber='${
+                  address.streetNumber
+                }' AND zip='${address.zipcode}'`,
+                $select: fields.join(",")
+              },
+              { encodeValuesOnly: true }
+            );
+
+            try {
+              const hpdBuilding = await nycHpdBuildingsUrl.get(`?${query}`);
+              const { data } = hpdBuilding;
+
+              const coords = await geocoder.geocode(
+                `${address.streetNumber} ${address.street}, ${address.city} NY, ${address.zipcode}`
+              );
+
+              console.log(coords);
+
+              if (!coords.results.length) {
+                throw new UserInputError("Address invalid");
+              }
+
+              const newBuilding = new Building({
+                buildingId: data[0].buildingid,
+                street: address.street.toUpperCase(),
+                borough: address.city.toUpperCase(),
+                streetNumber: address.streetNumber,
+                zipcode: address.zipcode,
+                complaints: [],
+                location: {
+                  type: "Point",
+                  coordinates: [
+                    coords.results[0].location.lng,
+                    coords.results[0].location.lat
+                  ]
+                }
+              });
+
+              await newBuilding.save();
+              return newBuilding._id;
+            } catch (err) {
+              console.log(err);
+              throw new UserInputError(err);
+            }
+          }
+
+          return doc._id;
+        };
+
+        const buildingId = await getBuildingId(building);
+
+        const newReview = new Review({
+          location: {
+            type: "Point",
+            coordinates: location
+          },
+          building: buildingId,
+          apartment,
+          rent,
+          bedrooms,
+          bathrooms,
+          amenities,
+          leaseLength,
+          leaseYearStart,
+          leaseYearEnd,
+          landlordRating,
+          neighborhoodRating,
+          transportRating,
+          review
+        });
+
+        await newReview.save();
+        return newReview;
+      } catch (err) {
+        throw new Error(err);
+      }
     }
   }
 };

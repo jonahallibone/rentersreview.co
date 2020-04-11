@@ -1,10 +1,10 @@
-!function(t,n){for(var e in n)t[e]=n[e]}(exports,function(t){var n={};function e(r){if(n[r])return n[r].exports;var i=n[r]={i:r,l:!1,exports:{}};return t[r].call(i.exports,i,i.exports,e),i.l=!0,i.exports}return e.m=t,e.c=n,e.d=function(t,n,r){e.o(t,n)||Object.defineProperty(t,n,{enumerable:!0,get:r})},e.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},e.t=function(t,n){if(1&n&&(t=e(t)),8&n)return t;if(4&n&&"object"==typeof t&&t&&t.__esModule)return t;var r=Object.create(null);if(e.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:t}),2&n&&"string"!=typeof t)for(var i in t)e.d(r,i,function(n){return t[n]}.bind(null,i));return r},e.n=function(t){var n=t&&t.__esModule?function(){return t.default}:function(){return t};return e.d(n,"a",n),n},e.o=function(t,n){return Object.prototype.hasOwnProperty.call(t,n)},e.p="",e(e.s=4)}([,,,function(t,n){t.exports=require("apollo-server")},function(t,n,e){"use strict";e.r(n);var r=e(3);const i=r.gql`
+!function(t,e){for(var n in e)t[n]=e[n]}(exports,function(t){var e={};function n(r){if(e[r])return e[r].exports;var i=e[r]={i:r,l:!1,exports:{}};return t[r].call(i.exports,i,i.exports,n),i.l=!0,i.exports}return n.m=t,n.c=e,n.d=function(t,e,r){n.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:r})},n.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},n.t=function(t,e){if(1&e&&(t=n(t)),8&e)return t;if(4&e&&"object"==typeof t&&t&&t.__esModule)return t;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:t}),2&e&&"string"!=typeof t)for(var i in t)n.d(r,i,function(e){return t[e]}.bind(null,i));return r},n.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return n.d(e,"a",e),e},n.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},n.p="",n(n.s=5)}({1:function(t,e){t.exports=require("apollo-server")},5:function(t,e,n){"use strict";n.r(e);var r=n(1);const i=r.gql`
   scalar Coordinates
   scalar Date
 
   type Query {
-    apartments: [Apartment!]!
-    getApartment(id: ID!): Apartment!
+    reviews: [Review!]!
+    getApartment(id: ID!): Review!
     getBuilding(id: ID!): Building!
     SearchBuildings(query: String!): BuildingSearch!
     getBuildingViolations(buildingId: ID!, limit: Int): [Violation!]!
@@ -37,22 +37,23 @@
 
   type Address {
     street: String!
+    streetNumber: String!
     city: String!
     state: String!
     zipcode: String!
   }
 
   input AddressInput {
+    streetNumber: String!
     street: String!
     city: String!
     state: String!
     zipcode: String!
   }
 
-  type Apartment {
+  type Review {
     id: ID!
-    address: Address!
-    location: Coordinates!
+    building: Building!
     apartment: String
     rent: String!
     bedrooms: Int!
@@ -65,6 +66,7 @@
     neighborhoodRating: Int!
     transportRating: Int!
     review: String!
+    createdAt: Date
   }
 
   type Complaint {
@@ -82,9 +84,10 @@
   }
 
   type Mutation {
-    createApartment(
+    createReview(
       address: AddressInput!
       location: Coordinates!
+      recommended: String!
       apartment: String
       rent: Int!
       bedrooms: Int!
@@ -97,6 +100,6 @@
       neighborhoodRating: Int!
       transportRating: Int!
       review: String
-    ): Apartment!
+    ): Review!
   }
-`;n.default=i}]));
+`;e.default=i}}));

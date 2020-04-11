@@ -18,7 +18,7 @@ import RatingInput from "../../components/rating-input/rating-input";
 import ToggleInput from "../../components/toggle-input/toggle-input";
 
 const ADD_REVIEW = gql`
-  mutation CreateApartment(
+  mutation createReview(
     $address: AddressInput!
     $apartment: String
     $location: Coordinates!
@@ -35,7 +35,7 @@ const ADD_REVIEW = gql`
     $recommended: String!
     $review: String
   ) {
-    createApartment(
+    createReview(
       address: $address
       apartment: $apartment
       location: $location
@@ -52,10 +52,7 @@ const ADD_REVIEW = gql`
       recommended: $recommended
       review: $review
     ) {
-      apartment
-      address {
-        street
-      }
+      review
     }
   }
 `;
@@ -101,7 +98,9 @@ const ReviewSchema = Yup.object().shape({
   transportRating: Yup.number()
     .min(1, "Please choose rating!")
     .max(5),
-  recommended: Yup.string().oneOf(["Yes", "No"], "Field must be selected!").required("Field must be selected!")
+  recommended: Yup.string()
+    .oneOf(["Yes", "No"], "Field must be selected!")
+    .required("Field must be selected!")
 });
 
 const SubmitReview = () => {
@@ -115,7 +114,16 @@ const SubmitReview = () => {
     suggestions: { status, data },
     setValue,
     clearSuggestions
-  } = usePlacesAutocomplete();
+  } = usePlacesAutocomplete({
+    requestOptions: {
+      bounds: {
+        north: 40.91553277599955,
+        east: -73.70000906255197,
+        south: 40.496115395170854,
+        west: -74.25559136249367
+      }
+    }
+  });
 
   const ref = useRef();
   useOnclickOutside(ref, () => {
@@ -132,11 +140,12 @@ const SubmitReview = () => {
   };
 
   const getComponent = (prev, component) => {
+    console.log(component);
     if (component.types.includes("street_number")) {
-      return { street: component.long_name };
+      return { streetNumber: component.long_name };
     }
     if (component.types.includes("route")) {
-      return { street: `${prev.street} ${component.long_name}` };
+      return { street: component.long_name };
     }
     if (component.types.includes("sublocality")) {
       return { city: component.long_name };
@@ -151,10 +160,12 @@ const SubmitReview = () => {
     }
   };
 
-  const formatAddress = (components) => {
+  const formatAddress = components => {
     return components.reduce((prev, curr) => {
+      console.log(prev);
       return { ...prev, ...getComponent(prev, curr) };
     }, {});
+    
   };
 
   const verifyAddress = () => {
@@ -248,9 +259,10 @@ const SubmitReview = () => {
                     variables: {
                       address: {
                         street: address.current.street,
+                        streetNumber: address.current.streetNumber,
                         city: address.current.city,
                         state: address.current.state,
-                        zipcode: address.current.zipcode
+                        zipcode: address.current.zipcode,
                       },
                       ...values,
                       location: [

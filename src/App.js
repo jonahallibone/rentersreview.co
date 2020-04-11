@@ -16,8 +16,6 @@ ga.initialize("UA-137477903-5");
 const usePageViews = () => {
   const location = useLocation();
   useEffect(() => {
-    console.log("ugh");
-    console.log(ga);
     ga.pageview(location.pathname);
   }, [location]);
 };

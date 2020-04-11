@@ -13,33 +13,38 @@ import ApartmentCard, {
 import RatingReadonly from "../rating-readonly/rating-readonly";
 
 const RecentReviews = () => {
-  const GET_RECENT_APARTMENTS = gql`
-  {
-    apartments {
-      id
-      address {
-        street
+  const GET_RECENT_REVIEWS = gql`
+    {
+      reviews {
+        id
+        landlordRating
+        neighborhoodRating
+        transportRating
+        building {
+          streetNumber
+          street
+        }
       }
-      landlordRating
-      neighborhoodRating
-      transportRating
     }
-  }
-`;
+  `;
 
-  const { loading, error, data } = useQuery(GET_RECENT_APARTMENTS);
+  const { loading, error, data } = useQuery(GET_RECENT_REVIEWS);
 
   const showRecent = data => {
-    const { apartments } = data;
+    const { reviews } = data;
 
-    return apartments.map(apartment => {
-      const { landlordRating, neighborhoodRating, transportRating } = apartment;
-      const overall = (landlordRating + neighborhoodRating + transportRating) / 3;
+    return reviews.map(review => {
+      const { landlordRating, neighborhoodRating, transportRating } = review;
+      const overall =
+        (landlordRating + neighborhoodRating + transportRating) / 3;
       return (
-        <ApartmentCard id={apartment.id} key={apartment.id}>
+        <ApartmentCard id={review.id} key={review.id}>
           <ApartmentCardHeader />
           <ApartmentCardContent>
-            <h6 className="mb-2">{apartment.address.street}</h6>
+            <h6 className="mb-2">
+              {review.building.streetNumber}{" "}
+              {review.building.street}
+            </h6>
             <div>
               <small>Landlord Rating</small>
             </div>

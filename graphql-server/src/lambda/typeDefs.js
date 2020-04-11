@@ -5,8 +5,8 @@ const typeDefs = gql`
   scalar Date
 
   type Query {
-    apartments: [Apartment!]!
-    getApartment(id: ID!): Apartment!
+    reviews: [Review!]!
+    getApartment(id: ID!): Review!
     getBuilding(id: ID!): Building!
     SearchBuildings(query: String!): BuildingSearch!
     getBuildingViolations(buildingId: ID!, limit: Int): [Violation!]!
@@ -39,22 +39,23 @@ const typeDefs = gql`
 
   type Address {
     street: String!
+    streetNumber: String!
     city: String!
     state: String!
     zipcode: String!
   }
 
   input AddressInput {
+    streetNumber: String!
     street: String!
     city: String!
     state: String!
     zipcode: String!
   }
 
-  type Apartment {
+  type Review {
     id: ID!
-    address: Address!
-    location: Coordinates!
+    building: Building!
     apartment: String
     rent: String!
     bedrooms: Int!
@@ -67,6 +68,7 @@ const typeDefs = gql`
     neighborhoodRating: Int!
     transportRating: Int!
     review: String!
+    createdAt: Date
   }
 
   type Complaint {
@@ -84,9 +86,10 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createApartment(
+    createReview(
       address: AddressInput!
       location: Coordinates!
+      recommended: String!
       apartment: String
       rent: Int!
       bedrooms: Int!
@@ -99,7 +102,7 @@ const typeDefs = gql`
       neighborhoodRating: Int!
       transportRating: Int!
       review: String
-    ): Apartment!
+    ): Review!
   }
 `;
 

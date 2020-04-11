@@ -1,12 +1,9 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
-import styles from "./apartment-review.module.scss";
 import { useQuery, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import ReviewMap from "../review-map/review-map";
-import RatingReadonly from "../rating-readonly/rating-readonly";
 import {
   FaShower,
   FaBed,
@@ -16,6 +13,9 @@ import {
   FaTshirt
 } from "react-icons/fa";
 import { MdPets, MdDirectionsBike, MdTrain } from "react-icons/md";
+import ReviewMap from "../review-map/review-map";
+import styles from "./apartment-review.module.scss";
+import RatingReadonly from "../rating-readonly/rating-readonly";
 import ClaimApartment from "../claim-apartment/claim-apartment";
 
 const GET_APARTMENT = gql`
