@@ -18,6 +18,7 @@ import ReviewMap from "../review-map/review-map";
 import Button from "../button/button";
 import BuildingViolations from "../building-violations/building-violations";
 import ComplaintsChart from "../complaints-chart/complaints-chart";
+import ReviewSingle from "../review-single/review-single";
 
 
 const GET_BUILDING = gql`
@@ -149,6 +150,9 @@ const Building = () => {
               <Route path={`${match.path}/reviews`}>Reviews</Route>
               <Route path={`${match.path}/violations`}>
                 <BuildingViolations buildingId={building.buildingId} />
+              </Route>
+              <Route path={`${match.path}/reviews/:id`}>
+                <ReviewSingle />
               </Route>
             </Col>
           </Row>

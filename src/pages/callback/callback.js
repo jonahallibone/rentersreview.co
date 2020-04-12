@@ -5,6 +5,7 @@ import AppContext from "../../AppContext";
 const Callback = () => {
   const { handleAuthentication } = useContext(AppContext);
   const history = useHistory();
+  
   useEffect(() => {
     const asyncAuth = async () => {
       await handleAuthentication();

@@ -3,7 +3,6 @@ import styles from "./recent-reviews.module.scss";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Rating from "react-rating";
 import { useQuery, gql } from "@apollo/client";
 import ApartmentCard, {
   ApartmentCardHeader,
@@ -23,6 +22,7 @@ const RecentReviews = () => {
         building {
           streetNumber
           street
+          _id
         }
       }
     }
@@ -37,13 +37,13 @@ const RecentReviews = () => {
       const { landlordRating, neighborhoodRating, transportRating } = review;
       const overall =
         (landlordRating + neighborhoodRating + transportRating) / 3;
+      console.log(review);
       return (
-        <ApartmentCard id={review.id} key={review.id}>
+        <ApartmentCard buildingId={review.building._id} reviewId={review.id} key={review.id}>
           <ApartmentCardHeader />
           <ApartmentCardContent>
             <h6 className="mb-2">
-              {review.building.streetNumber}{" "}
-              {review.building.street}
+              {review.building.streetNumber} {review.building.street}
             </h6>
             <div>
               <small>Landlord Rating</small>

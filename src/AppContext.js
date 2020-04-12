@@ -6,7 +6,7 @@ const AppContext = createContext(null);
 const AppContextProvider = ({ children }) => {
   const auth = useMemo(() => {
     return new auth0.WebAuth({
-      domain: "dev-yxi32afc.auth0.com",
+      domain: "login.rentersreview.co",
       clientID: "FU9kq4KHArC6r1Q3H4WiS6JIYl0cefnk",
       redirectUri: `${process.env.REACT_APP_HOST_URL}/callback`,
       audience: "https://dev-yxi32afc.auth0.com/userinfo",
@@ -42,31 +42,19 @@ const AppContextProvider = ({ children }) => {
     setIsLoggedIn(isAuthenticated());
   }, [setIsLoggedIn]);
 
-  const handleAuthentication = useCallback(() => {
-    return new Promise((resolve, reject) => {
-      auth.parseHash((err, authResult) => {
-        if (err) return reject(err);
-        if (!authResult || !authResult.idToken) {
-          return reject(err);
-        }
-        setSession(authResult);
-        resolve();
-      });
-    });
-  }, [auth, setSession]);
-
   const getSession = useCallback(
     () =>
       new Promise((resolve, reject) => {
         if (isAuthenticated()) {
           auth.checkSession({}, (err, authResult) => {
             if (err) {
+              console.log(err);
               localStorage.removeItem(authFlag);
               return reject(err);
             }
             console.log(authResult);
             const { idTokenPayload } = authResult;
-            
+            console.log("Got this far");
             setUser({
               email: idTokenPayload.email,
               id: idTokenPayload["https://rentersreview.co/uuid"]
@@ -78,6 +66,25 @@ const AppContextProvider = ({ children }) => {
       }),
     [auth]
   );
+
+  const handleAuthentication = useCallback(() => {
+    return new Promise((resolve, reject) => {
+      auth.parseHash((err, authResult) => {
+        if (err) return reject(err);
+        if (!authResult || !authResult.idToken) {
+          return reject(err);
+        }
+        setSession(authResult);
+        const { idTokenPayload } = authResult;
+        setUser({
+          email: idTokenPayload.email,
+          id: idTokenPayload["https://rentersreview.co/uuid"]
+        });
+
+        resolve();
+      });
+    });
+  }, [auth, setSession]);
 
   const silentAuth = useCallback(async () => {
     console.log("authed");

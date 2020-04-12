@@ -14,9 +14,9 @@ const ApartmentCardFooter = ({ children }) => (
   <footer className={styles.apartment_card__footer}>{children}</footer>
 );
 
-const ApartmentCard = ({ children, id }) => {
+const ApartmentCard = ({ children, buildingId, reviewId }) => {
   return (
-      <Link to={`/apartment/${id}`} className={styles.apartment_card}>{children}</Link>
+      <Link to={`/building/${buildingId}/reviews/${reviewId}`} className={styles.apartment_card}>{children}</Link>
   );
 };
 
