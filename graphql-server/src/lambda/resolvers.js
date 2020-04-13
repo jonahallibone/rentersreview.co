@@ -13,7 +13,6 @@ const resolvers = {
       const res = await Review.find()
         .limit(10)
         .populate("building");
-      console.log(res);
       return res;
     },
     getApartment: async (parent, args, { id }) => {

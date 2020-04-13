@@ -48,13 +48,10 @@ const AppContextProvider = ({ children }) => {
         if (isAuthenticated()) {
           auth.checkSession({}, (err, authResult) => {
             if (err) {
-              console.log(err);
               localStorage.removeItem(authFlag);
               return reject(err);
             }
-            console.log(authResult);
             const { idTokenPayload } = authResult;
-            console.log("Got this far");
             setUser({
               email: idTokenPayload.email,
               id: idTokenPayload["https://rentersreview.co/uuid"]
@@ -87,7 +84,6 @@ const AppContextProvider = ({ children }) => {
   }, [auth, setSession]);
 
   const silentAuth = useCallback(async () => {
-    console.log("authed");
     if (isAuthenticated()) {
       const session = await getSession();
       setSession(session);

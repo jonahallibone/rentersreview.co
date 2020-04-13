@@ -11,8 +11,12 @@ import typeDefs from "./typeDefs";
 import geoPointScalar from "./scalars/Geopoint";
 import dateScalar from "./scalars/Date";
 
+Sentry.init({
+  dsn: "https://4de26209a3c44912b676ef8013081e8b@sentry.io/4754945"
+});
+
 const client = jwksClient({
-  jwksUri: `https://dev-yxi32afc.auth0.com/.well-known/jwks.json`
+  jwksUri: `https://login.rentersreview.co/.well-known/jwks.json`
 });
 
 const getKey = (header, cb) => {
@@ -24,15 +28,11 @@ const getKey = (header, cb) => {
 
 const options = {
   audience: process.env.AUTH0_AUDIENCE,
-  issuer: "https://dev-yxi32afc.auth0.com/",
+  issuer: "https://login.rentersreview.co/",
   algorithms: ["RS256"]
 };
 
 config();
-
-Sentry.init({
-  dsn: "https://4de26209a3c44912b676ef8013081e8b@sentry.io/4754945"
-});
 
 const startServer = async () => {
   await mongoose.connect(process.env.DB_HOST, {
