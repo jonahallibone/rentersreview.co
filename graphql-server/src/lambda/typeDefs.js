@@ -6,6 +6,7 @@ const typeDefs = gql`
 
   type Query {
     reviews: [Review!]!
+    getBuildingReviews(id: ID!): [Review!]!
     getApartment(id: ID!): Review!
     getBuilding(id: ID!): Building!
     SearchBuildings(query: String!): BuildingSearch!

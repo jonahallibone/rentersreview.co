@@ -19,7 +19,7 @@ import Button from "../button/button";
 import BuildingViolations from "../building-violations/building-violations";
 import ComplaintsChart from "../complaints-chart/complaints-chart";
 import ReviewSingle from "../review-single/review-single";
-
+import BuildingReviews from "../building-reviews/building-reviews";
 
 const GET_BUILDING = gql`
   query GetBuilding($id: ID!) {
@@ -147,7 +147,9 @@ const Building = () => {
                 <ComplaintsChart building={building} />
                 <BuildingViolations preview buildingId={building.buildingId} />
               </Route>
-              <Route path={`${match.path}/reviews`}>Reviews</Route>
+              <Route path={`${match.path}/reviews`}>
+                <BuildingReviews buildingId={building.buildingId} />
+              </Route>
               <Route path={`${match.path}/violations`}>
                 <BuildingViolations buildingId={building.buildingId} />
               </Route>

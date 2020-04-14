@@ -15,6 +15,10 @@ const resolvers = {
         .populate("building");
       return res;
     },
+    getBuildingReviews: async (parent, args, { id }) => {
+      const res = await Review.find({building: args.buildingId})
+      return res;
+    },
     getApartment: async (parent, args, { id }) => {
       const user_id = await id;
       if (user_id) {
