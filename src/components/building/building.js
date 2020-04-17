@@ -11,6 +11,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { ArrowLeft, Plus, Heart, Share } from "react-feather";
+import { Helmet } from "react-helmet";
 import RatingReadonly from "../rating-readonly/rating-readonly";
 import styles from "./building.module.scss";
 import ClaimApartment from "../claim-apartment/claim-apartment";
@@ -47,17 +48,27 @@ const Building = () => {
   });
 
   if (loading) {
-    return <div></div>;
+    return <div>Loading</div>;
   }
 
   if (error) {
-    return <div></div>;
+    return <div>Error</div>;
   }
 
   const { getBuilding: building } = data;
 
   return (
     <Container>
+      <Helmet>
+        <title>
+          Renters Review | {building.streetNumber} {building.street}
+        </title>
+        <meta
+          name="description"
+          content={`Reviews, violations and complaints at ${building.streetNumber} ${building.street}`}
+        />
+        <link rel="canonical" href="http://mysite.com/example" />
+      </Helmet>
       <Row>
         <Col>
           <div className="pt-2 pb-2">

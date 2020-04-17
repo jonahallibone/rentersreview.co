@@ -6,7 +6,6 @@ import styles from "./building-reviews.module.scss";
 const GET_BUILDING_REVIEWS = gql`
   query GetBuildingReviews($id: ID!) {
     getBuildingReviews(id: $id) {
-      location
       apartment
       rent
       bedrooms

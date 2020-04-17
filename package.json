@@ -46,6 +46,7 @@
     "react-dom": "^16.13.0",
     "react-feather": "^2.0.3",
     "react-ga": "^2.7.0",
+    "react-helmet": "^6.0.0",
     "react-icons": "^3.9.0",
     "react-rating": "^2.0.4",
     "react-router-dom": "^5.1.2",

@@ -90,7 +90,7 @@ const ComplaintsChart = ({ building }) => {
       xScale={{ type: "point" }}
       yScale={{
         type: "linear",
-        min: "0",
+        min: 0,
         max: maxY + 5,
         stacked: false,
         reverse: false

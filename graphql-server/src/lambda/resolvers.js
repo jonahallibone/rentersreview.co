@@ -16,7 +16,8 @@ const resolvers = {
       return res;
     },
     getBuildingReviews: async (parent, args, { id }) => {
-      const res = await Review.find({building: args.buildingId})
+      const res = await Review.find({building: args.id});
+      console.log(res);
       return res;
     },
     getApartment: async (parent, args, { id }) => {

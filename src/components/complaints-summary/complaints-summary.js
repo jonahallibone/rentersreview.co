@@ -25,7 +25,7 @@ const ComplaintsSummary = ({ complaintData }) => {
       <Col xs={12}>
         <div className={styles.complaints_grid}>
           {majorCategories.map(category => (
-            <div className={styles.complaint_metric}>
+            <div className={styles.complaint_metric} key={category.title}>
               <div className={styles.complaint_number}>{category.count}</div>
               <div className={styles.complaint_title}>{category.title}</div>
             </div>
