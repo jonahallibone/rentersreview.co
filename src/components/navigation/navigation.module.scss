@@ -4,13 +4,13 @@
   justify-content: flex-start;
   background: #FFF;
   width: 100%;
-  height: 60px;
+  height: 70px;
   position: fixed;
   top: 0;
   left: 0;
   padding: .5rem 0;
   z-index: 1000;
-  box-shadow: 0 0 0 3px rgba($color: #000000, $alpha: 0.1);
+  border-bottom: 1px solid #F0F0F0;
 }
 
 .navigation_links {
@@ -23,8 +23,14 @@
   margin: 0;
   color: #000;
   text-decoration: none;
+  max-width: 150px;
 
   &:hover {
     text-decoration: none;
+  }
+
+  & img {
+    display: block;
+    width: 100%;
   }
 }

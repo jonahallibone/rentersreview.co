@@ -19,18 +19,19 @@
 
 .homepage_input__button {
   padding: .75rem 1rem;
-  background: #0984e3;
+  background: #1BC54A;
   color: #FFF;
   border-radius: 5px;
   border: none;
   outline: none;
-  transition: .345s ease-in-out background;
+  transition: .15s ease all;
   height: 48px;
   min-width: 85px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  line-height: 1;
 
   &:active,
   &:focus {
@@ -38,7 +39,8 @@
   }
 
   &:hover {
-    background: #333;
+    background: rgba($color: #3EC886, $alpha: .88);
+    color: #FFF;
   }
 }
 

@@ -21,7 +21,7 @@ const Home = () => {
         <Container>
           <Row className="justify-content-center">
             <Col xs={12} md={8}>
-              <h1 className="text-center">
+              <h1 className="text-center font-weight-bold">
                 Review your apartment and read about your next.
               </h1>
             </Col>

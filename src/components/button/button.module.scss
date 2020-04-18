@@ -1,24 +1,35 @@
-.button {
-  background: #0984e3;
-  color: #FFF;
+@mixin button {
   border-radius: 5px;
-  padding: .7rem .65rem;
+  padding: .45rem .65rem;
   font-size: .875rem;
-  border: none;
   transition: .345s ease background;
   font-weight: 600;
   display: inline-flex;
   justify-content: center;
   align-self: center;
   align-items: center;
-  
+
   &:focus {
     outline: none;
   }
   
   &:hover {
     text-decoration: none;
-    color: #FFF;
-    background: #74b9ff;
+    color: #1BC54A;
+    border: 1px solid #1BC54A;
+    background: #FFF;
   }
+}
+
+.button {
+  @include button;
+  color: #1BC54A;
+  border: 1px solid #DDD;  
+}
+
+.button_solid {
+  @include button;
+  background: #1BC54A;
+  border: 1px solid #1BC54A;
+  color: #FFF;
 }

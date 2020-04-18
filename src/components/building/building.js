@@ -110,7 +110,7 @@ const Building = () => {
           </Row>
           <Row className="mt-3">
             <Col>
-              <Button type="link" to="/submit-review">
+              <Button solid type="link" to="/submit-review">
                 <Plus size={18} strokeWidth={3} className="mr-2" />
                 Review this building
               </Button>

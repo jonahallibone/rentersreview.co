@@ -19,7 +19,9 @@ const Navigation = () => {
         <Row className="align-items-center justify-content-between">
           <Col xs>
             <Link to="/">
-              <h6 className={styles.logo}>Renters Review</h6>
+              <h6 className={styles.logo}>
+                <img src="/rr-logo.svg" />
+              </h6>
             </Link>
           </Col>
           <Col xs className="d-none d-md-flex hidden-xs justify-content-end">
@@ -49,7 +51,7 @@ const Navigation = () => {
               </Button>
             )}
             <Button className="ml-2" type="link" to="/submit-review">
-              Add a review
+              Submit a Review
             </Button>
           </Col>
           <Col xs className="d-flex d-md-none justify-content-end">

@@ -7,15 +7,11 @@
   color: #000;
 
   &:hover {
-    box-shadow: 0 0 0 1px #000;
-    border: 1px solid #000;
+    box-shadow: 0 0 0 1px #1BC54A;
+    border: 1px solid #1BC54A;
     text-decoration: none;
     color: #000;
   }
-}
-
-.apartment_card__header {
-
 }
 
 .apartment_card__content {
@@ -27,4 +23,8 @@
   border-top: 1px solid #DDD;
   padding: 1rem;
   flex: 0 0 50px;
+  transition: .345s ease all;
+  background: #FAFAFA;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
