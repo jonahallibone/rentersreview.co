@@ -16,11 +16,11 @@ const resolvers = {
       return res;
     },
     getBuildingReviews: async (parent, args, { id }) => {
-      const res = await Review.find({building: args.id});
+      const res = await Review.find({ building: args.id });
       console.log(res);
       return res;
     },
-    getApartment: async (parent, args, { id }) => {
+    getReview: async (parent, args, { id }) => {
       const user_id = await id;
       if (user_id) {
         return Review.findById(args.id);
@@ -149,7 +149,25 @@ const resolvers = {
         throw new Error(err);
       }
     },
+    getNearbyBuildings: async (parent, args, { id }) => {
+      const building = await Building.findById(args.buildingId);
+      const METERS_PER_MILE = 1609.34;
+      const MILE_RADIUS = 0.25;
+      const nearby = await Building.find({
+        _id: { $ne: args.buildingId },
+        location: {
+          $nearSphere: {
+            $geometry: {
+              type: "Point",
+              coordinates: building.location.coordinates
+            },
+            $maxDistance: MILE_RADIUS * METERS_PER_MILE
+          }
+        }
+      }).limit(3);
 
+      return nearby;
+    },
     SearchBuildings: async (parent, args, { id }) => {
       const user_id = await id;
       const results = await Building.aggregate([
@@ -246,8 +264,6 @@ const resolvers = {
               const coords = await geocoder.geocode(
                 `${address.streetNumber} ${address.street}, ${address.city} NY, ${address.zipcode}`
               );
-
-              console.log(coords);
 
               if (!coords.results.length) {
                 throw new UserInputError("Address invalid");
