@@ -39,7 +39,7 @@ const Button = ({
 
   return (
     <button
-      type="button"
+      type={type}
       {...rest}
       className={`${buttonFill} ${className}`}
       onClick={onClick}

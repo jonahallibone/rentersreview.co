@@ -19,6 +19,10 @@ const Review = mongoose.model(
       landlordRating: Number,
       neighborhoodRating: Number,
       transportRating: Number,
+      noiseRating: Number,
+      maintenanceRating: Number,
+      safetyRating: Number,
+      recommended: String,
       review: String,
       createdAt: Date
     },

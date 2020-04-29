@@ -3,7 +3,7 @@ import qs from "qs";
 import { UserInputError } from "apollo-server";
 import Geocodio from "geocodio-library-node";
 import Review from "./models/Review";
-import { Building } from "./models/Building";
+import { Building, aggregateBuildingRatingAndTotal } from "./models/Building";
 
 const geocoder = new Geocodio("906e226650616fafe25e522fe92a692101a2021");
 
@@ -12,7 +12,10 @@ const resolvers = {
     reviews: async () => {
       const res = await Review.find()
         .limit(10)
-        .populate("building");
+        .populate("building")
+        .sort({ createdAt: "descending" })
+        .select("-leaseLength");
+
       return res;
     },
     getBuildingReviews: async (parent, args, { id }) => {
@@ -169,7 +172,6 @@ const resolvers = {
       return nearby;
     },
     SearchBuildings: async (parent, args, { id }) => {
-      const user_id = await id;
       const results = await Building.aggregate([
         {
           $searchBeta: {
@@ -219,12 +221,15 @@ const resolvers = {
         bedrooms,
         bathrooms,
         amenities,
-        leaseLength,
         leaseYearStart,
         leaseYearEnd,
         landlordRating,
         neighborhoodRating,
         transportRating,
+        noiseRating,
+        maintenanceRating,
+        safetyRating,
+        recommended,
         review
       }
     ) => {
@@ -235,9 +240,9 @@ const resolvers = {
       };
 
       try {
-        const building = await Building.findOne(req);
+        const getBuildingId = async () => {
+          const doc = await Building.findOne(req);
 
-        const getBuildingId = async doc => {
           if (!doc) {
             const nycHpdBuildingsUrl = axios.create({
               baseURL: "https://data.cityofnewyork.us/resource/kj4p-ruqc.json",
@@ -286,39 +291,51 @@ const resolvers = {
               });
 
               await newBuilding.save();
-              return newBuilding._id;
+              return newBuilding;
             } catch (err) {
               console.log(err);
               throw new UserInputError(err);
             }
           }
 
-          return doc._id;
+          return doc;
         };
 
-        const buildingId = await getBuildingId(building);
+        const building = await getBuildingId();
 
         const newReview = new Review({
           location: {
             type: "Point",
             coordinates: location
           },
-          building: buildingId,
+          building: building._id,
           apartment,
           rent,
           bedrooms,
           bathrooms,
           amenities,
-          leaseLength,
           leaseYearStart,
           leaseYearEnd,
           landlordRating,
           neighborhoodRating,
           transportRating,
+          noiseRating,
+          maintenanceRating,
+          safetyRating,
+          recommended,
           review
         });
 
         await newReview.save();
+
+        const [stats] = await aggregateBuildingRatingAndTotal(building._id);
+
+        console.log(stats);
+
+        building.averageRating = stats.rating;
+        building.totalReviews = stats.total;
+
+        await building.save();
         return newReview;
       } catch (err) {
         throw new Error(err);

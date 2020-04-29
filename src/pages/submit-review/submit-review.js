@@ -26,12 +26,14 @@ const ADD_REVIEW = gql`
     $bedrooms: Int!
     $bathrooms: Int!
     $amenities: [String]!
-    $leaseLength: String
     $leaseYearStart: Int
     $leaseYearEnd: Int
     $landlordRating: Int!
     $neighborhoodRating: Int!
     $transportRating: Int!
+    $noiseRating: Int!
+    $safetyRating: Int!
+    $maintenanceRating: Int!
     $recommended: String!
     $review: String
   ) {
@@ -43,12 +45,14 @@ const ADD_REVIEW = gql`
       bedrooms: $bedrooms
       bathrooms: $bathrooms
       amenities: $amenities
-      leaseLength: $leaseLength
       leaseYearStart: $leaseYearStart
       leaseYearEnd: $leaseYearEnd
       landlordRating: $landlordRating
       neighborhoodRating: $neighborhoodRating
       transportRating: $transportRating
+      noiseRating: $noiseRating
+      maintenanceRating: $maintenanceRating
+      safetyRating: $safetyRating
       recommended: $recommended
       review: $review
     ) {
@@ -86,7 +90,6 @@ const ReviewSchema = Yup.object().shape({
   bathrooms: Yup.string()
     .min(1)
     .required("Required"),
-  leaseLength: Yup.string().min(1),
   leaseYearStart: Yup.string().min(4),
   leaseYearEnd: Yup.string().min(4),
   landlordRating: Yup.number()
@@ -96,6 +99,15 @@ const ReviewSchema = Yup.object().shape({
     .min(1, "Please choose rating!")
     .max(5),
   transportRating: Yup.number()
+    .min(1, "Please choose rating!")
+    .max(5),
+  noiseRating: Yup.number()
+    .min(1, "Please choose rating!")
+    .max(5),
+  maintenanceRating: Yup.number()
+    .min(1, "Please choose rating!")
+    .max(5),
+  safetyRating: Yup.number()
     .min(1, "Please choose rating!")
     .max(5),
   recommended: Yup.string()
@@ -165,7 +177,6 @@ const SubmitReview = () => {
       console.log(prev);
       return { ...prev, ...getComponent(prev, curr) };
     }, {});
-    
   };
 
   const verifyAddress = () => {
@@ -243,12 +254,14 @@ const SubmitReview = () => {
                 bedrooms: "",
                 bathrooms: "",
                 amenities: [],
-                leaseLength: "",
                 leaseYearStart: "",
                 leaseYearEnd: "",
                 landlordRating: 0,
                 neighborhoodRating: 0,
                 transportRating: 0,
+                noiseRating: 0,
+                maintenanceRating: 0,
+                safetyRating: 0,
                 recommended: "",
                 review: ""
               }}
@@ -262,7 +275,7 @@ const SubmitReview = () => {
                         streetNumber: address.current.streetNumber,
                         city: address.current.city,
                         state: address.current.state,
-                        zipcode: address.current.zipcode,
+                        zipcode: address.current.zipcode
                       },
                       ...values,
                       location: [
@@ -356,23 +369,16 @@ const SubmitReview = () => {
                         ) : null}
                       </label>
                     </Col>
-                    <Col xs={12} md={6} className="mt-5">
-                      <label>
-                        Lease Length
-                        <Field name="leaseLength" className={styles.input} />
-                        {errors.leaseLength && touched.leaseLength ? (
-                          <small className={styles.error}>
-                            {errors.leaseLength}
-                          </small>
-                        ) : null}
-                      </label>
-                    </Col>
                   </Row>
                   <Row>
                     <Col xs={12} md={6} className="mt-5">
                       <label>
                         Year of lease start
-                        <Field name="leaseYearStart" className={styles.input} />
+                        <Field
+                          name="leaseYearStart"
+                          type="number"
+                          className={styles.input}
+                        />
                         {errors.leaseYearStart && touched.leaseYearStart ? (
                           <small className={styles.error}>
                             {errors.leaseYearStart}
@@ -455,6 +461,32 @@ const SubmitReview = () => {
                     </Col>
                   </Row>
                   <Row className="mt-5">
+                    <Col xs={12} sm={4}>
+                      <Field
+                        name="noiseRating"
+                        label="Noise"
+                        styles={styles}
+                        component={RatingInput}
+                      />
+                    </Col>
+                    <Col xs={12} sm={4}>
+                      <Field
+                        name="maintenanceRating"
+                        label="Maintenance"
+                        styles={styles}
+                        component={RatingInput}
+                      />
+                    </Col>
+                    <Col xs={12} sm={4}>
+                      <Field
+                        name="safetyRating"
+                        label="Safety"
+                        styles={styles}
+                        component={RatingInput}
+                      />
+                    </Col>
+                  </Row>
+                  <Row className="mt-5">
                     <Col xs={12}>
                       <Field
                         label="Would you recommend this apartment?"
@@ -478,6 +510,7 @@ const SubmitReview = () => {
                   <Row className="mt-5">
                     <Col>
                       <Button
+                        solid
                         type="submit"
                         onClick={verifyAddress}
                         disabled={loading}

@@ -31,6 +31,8 @@ const GET_BUILDING = gql`
       borough
       location
       buildingId
+      averageRating
+      totalReviews
     }
   }
 `;
@@ -103,8 +105,8 @@ const Building = () => {
           <Row className="mt-2">
             <Col xs={12}>
               <div className="d-flex align-items-center">
-                <RatingReadonly value={0} size="25" />
-                <small className="mb-0 ml-2">0 Reviews</small>
+                <RatingReadonly value={building.averageRating} size="25" />
+                <small className="mb-0 ml-2">{building.totalReviews} Reviews</small>
               </div>
             </Col>
           </Row>

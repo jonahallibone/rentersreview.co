@@ -32,6 +32,8 @@ const typeDefs = gql`
     streetNumber: String!
     zipcode: String!
     location: Coordinates!
+    totalReviews: Int
+    averageRating: Float
   }
 
   type BuildingSearch {
@@ -63,14 +65,17 @@ const typeDefs = gql`
     bedrooms: Int!
     bathrooms: Int!
     amenities: [String]!
-    leaseLength: String
     leaseYearStart: String
     leaseYearEnd: String
     landlordRating: Int!
     neighborhoodRating: Int!
     transportRating: Int!
+    noiseRating: Int!
+    safetyRating: Int!
+    maintenanceRating: Int!
     review: String!
     createdAt: Date
+    updatedAt: Date
   }
 
   type Complaint {
@@ -83,7 +88,7 @@ const typeDefs = gql`
     minorCategory: String!
     code: String!
     status: String!
-    statusDate: Date,
+    statusDate: Date
     statusDescription: String!
   }
 
@@ -97,12 +102,14 @@ const typeDefs = gql`
       bedrooms: Int!
       bathrooms: Int!
       amenities: [String]!
-      leaseLength: String
       leaseYearStart: Int
       leaseYearEnd: Int
       landlordRating: Int!
       neighborhoodRating: Int!
       transportRating: Int!
+      noiseRating: Int!
+      safetyRating: Int!
+      maintenanceRating: Int!
       review: String
     ): Review!
   }
